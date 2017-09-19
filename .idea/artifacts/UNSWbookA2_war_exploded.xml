@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="UNSWbookA2:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/UNSWbookA2_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="UNSWbookA2/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="UNSWbookA2" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

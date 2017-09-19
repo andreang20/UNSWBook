@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-ear" name="UNSWbookA2:ear exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/UNSWbookA2_ear_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="UNSWbookA2/javaeeApplication/javaEEApplication" />
+      <element id="directory" name="web.war">
+        <element id="artifact" artifact-name="UNSWbookA2:war exploded" />
+      </element>
+    </root>
+  </artifact>
+</component>
