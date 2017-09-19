@@ -13,10 +13,10 @@
 </head>
 <body>
     <div id="login_div" class="container">
-        <form>
+        <form action="/submit_form" method="post">
             <div class="form-group">
                 <label for="content">Content: </label>
-                <input type="text" class="form-control" id="content">
+                <input type="text" class="form-control" id="content" name="content">
             </div>
             <div class="form-group">
                 <label for="img">Image: </label>
