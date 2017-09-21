@@ -34,9 +34,9 @@
                     <input type="email" class="form-control" id="email" name="email">
                     <label>Gender: </label>
                     <select class="form-control" id="gender" name="gender">
-                        <option>Male</option>
-                        <option>Female</option>
-                        <option>Other</option>
+                        <option>male</option>
+                        <option>female</option>
+                        <!--<option>Other</option>-->
                     </select>
                     <label>Date of Birth: </label>
                     <input type="date" class="form-control" id="dob" name="dob">

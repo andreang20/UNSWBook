@@ -2,10 +2,7 @@ package dao;
 
 import db.IDbManager;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class UserProfileDao {
@@ -17,24 +14,30 @@ public class UserProfileDao {
         this.dbm = dbManager;
     }
 
-    public boolean addUserProfile(UserProfile userProfile) {
-        boolean res = false;
+    public void addUserProfile(UserProfile userProfile) {
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             conn = dbm.establishConnection();
-            stmt = conn.createStatement();
+            stmt = conn.prepareStatement("INSERT INTO user_profile (username, password, first_name, last_name, email, gender, date_of_birth, session_id) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 
-            String sql = "INSERT INTO user_profile (username, password, first_name, last_name, email, gender, date_of_birth, session_id) "+
-                    String.format("VALUES ('%s', '%s', '%s', '%s', '%s', '%s', '%s', %s);", userProfile.getUsername(), userProfile.getPassword(), userProfile.getFirstname(),
-                            userProfile.getLastname(), userProfile.getEmail(), userProfile.getGender(), userProfile.getDate(),
-                            userProfile.getSession_id());
-            System.out.println(sql);
-            stmt.executeUpdate(sql);
+            stmt.setString(1, userProfile.getUsername());
+            stmt.setString(2, userProfile.getPassword());
+            stmt.setString(3, userProfile.getFirstname());
+            stmt.setString(4, userProfile.getLastname());
+            stmt.setString(5, userProfile.getEmail());
+            stmt.setString(6, userProfile.getGender());
+            System.out.println(userProfile.getDate());
+            stmt.setDate(7, userProfile.getDate());
+            stmt.setInt(8, userProfile.getSession_id());
 
-            res = true;
+
+            stmt.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException("Unable to add user profile");
         } finally {
             if(conn != null) {
                 try {
@@ -47,7 +50,6 @@ public class UserProfileDao {
                 } catch (SQLException e) { }
             }
         }
-        return res;
     }
 
     public ArrayList<UserProfile> getUserProfiles() {

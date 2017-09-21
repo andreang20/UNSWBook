@@ -21,8 +21,7 @@ public class WallPostDao implements IWallPostDao {
         return wallPosts;
     }
 
-    public boolean addWallPost(WallPost wallPost) {
-        boolean res;
+    public void addWallPost(WallPost wallPost) {
         Connection conn = null;
         Statement stmt = null;
         try {
@@ -34,10 +33,9 @@ public class WallPostDao implements IWallPostDao {
             System.out.println(sql);
             stmt.executeUpdate(sql);
             //conn.commit();
-            res = true;
         } catch (SQLException e) {
-            res = false;
             e.printStackTrace();
+            throw new RuntimeException("Unable to add wall post.");
             /*try {
                 conn.rollback();
             } catch (SQLException e1) {
@@ -55,7 +53,6 @@ public class WallPostDao implements IWallPostDao {
                 } catch (SQLException e) { }
             }
         }
-        return res;
     }
 
     public void getPostsByUser(String username) {
