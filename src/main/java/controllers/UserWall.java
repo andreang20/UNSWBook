@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.UserProfile;
 import dao.WallPost;
 import dao.WallPostDao;
 import db.DbManager;
@@ -27,7 +28,8 @@ public class UserWall extends HttpServlet {
         }
 
         WallPostDao wallPostDao = new WallPostDao(dbm);
-        wallPostDao.getUserWall("john123");
+        UserProfile user = (UserProfile) req.getSession().getAttribute("userprofile");
+        wallPostDao.getUserWall(user.getUsername());
 
         ArrayList<WallPost> posts = wallPostDao.getWallPosts();
         req.setAttribute("posts", posts);
