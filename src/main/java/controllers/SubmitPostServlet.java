@@ -1,5 +1,6 @@
 package controllers;
 
+import dao.UserProfile;
 import dao.WallPost;
 import dao.WallPostDao;
 import db.DbManager;
@@ -31,8 +32,7 @@ public class SubmitPostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Get logged in user from session
-        //String currentUser = (String) req.getSession().getAttribute("user"); // TODO (make sure it is correct)
-        String currentUser = "john123"; // predefined in my database for testing.
+        UserProfile user = (UserProfile) req.getSession().getAttribute("userprofile");
 
         // Get inserted parameters from form
         String content = req.getParameter("content");
@@ -47,7 +47,7 @@ public class SubmitPostServlet extends HttpServlet {
 
         System.out.println(content);
         // Do a write
-        WallPost newPost = new WallPost(currentUser, SubmitPostServlet.UNINIT_ID, content, ts);
+        WallPost newPost = new WallPost(user.getUsername(), SubmitPostServlet.UNINIT_ID, content, ts);
 
         // if success of the db write then redirect to wall
         try {
@@ -60,8 +60,7 @@ public class SubmitPostServlet extends HttpServlet {
         }
 
         // if fail, then redirect to same page
-        System.out.println("SUCCESS!");
-        resp.sendRedirect("/submit_post.jsp");
+        resp.sendRedirect("/home.jsp");
 
     }
 
