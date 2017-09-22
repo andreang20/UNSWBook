@@ -59,19 +59,17 @@ public class UserProfileDao {
     public void search(String firstname, String lastname) {
         userProfiles.clear();
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             conn = dbm.establishConnection();
-            stmt = conn.createStatement();
+            stmt = conn.prepareStatement("select * " +
+                    "from user_profile" +
+                    " where lower(user_profile.first_name) like '%%' || lower(?) || '%%' and lower(user_profile.last_name) like '%%' || lower(?) || '%%';");
+            stmt.setString(1, firstname);
+            stmt.setString(2, lastname);
 
-            String sql = String.format("select *\n" +
-                    "from user_profile\n" +
-                    "where lower(user_profile.first_name) like '%%' || lower('%s') || '%%'\n" +
-                    "\tand lower(user_profile.last_name) like '%%' || lower('%s') || '%%';", firstname, lastname);
+            ResultSet rs = stmt.executeQuery();
 
-            System.out.println(sql);
-
-            ResultSet rs = stmt.executeQuery(sql);
             while(rs.next()) {
                 userProfiles.add(new UserProfile(rs.getString("username"), rs.getString("password"),
                         rs.getString("first_name"), rs.getString("last_name"),
@@ -151,27 +149,22 @@ public class UserProfileDao {
     public void getFriends(String username) {
         userProfiles.clear();
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             conn = dbm.establishConnection();
-            stmt = conn.createStatement();
 
-            /*String sql = "select friend_list.username_secondary\n" +
-                    "from friend_list\n" +
-                    "where friend_list.username_primary = '%s' and friend_list.accepted = TRUE;";*/
-
-            String sql = String.format("select *\n" +
+            String sql = "select *\n" +
                     "from\n" +
                     "(select friend_list.username_secondary\n" +
                     "from friend_list\n" +
-                    "where friend_list.username_primary = '%s' and friend_list.accepted = TRUE) t1\n" +
+                    "where friend_list.username_primary = ? and friend_list.accepted = TRUE) t1\n" +
                     "inner join\n" +
                     "(select *\n" +
                     "from user_profile) t2\n" +
-                    "on t1.username_secondary = t2.username;", username);
+                    "on t1.username_secondary = t2.username;";
 
-
-            System.out.println(sql);
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, username);
 
             ResultSet rs = stmt.executeQuery(sql);
 

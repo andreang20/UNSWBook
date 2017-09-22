@@ -2,10 +2,7 @@ package dao;
 
 import db.IDbManager;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class WallPostDao implements IWallPostDao {
@@ -23,24 +20,20 @@ public class WallPostDao implements IWallPostDao {
 
     public void addWallPost(WallPost wallPost) {
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             conn = dbm.establishConnection();
-            stmt = conn.createStatement();
-            String sql = "INSERT INTO wall_post (username, content, post_date)" +
-                    " VALUES ('"+wallPost.getUsername()+"', '"
-                    +wallPost.getContent()+"', '"+wallPost.getPostDate().toString()+"');";
-            System.out.println(sql);
-            stmt.executeUpdate(sql);
+            stmt = conn.prepareStatement("INSERT INTO wall_post (username, content, post_date)" +
+                    " VALUES (?,?,?);");
+            stmt.setString(1, wallPost.getUsername());
+            stmt.setString(2, wallPost.getContent());
+            stmt.setTimestamp(3, wallPost.getPostDate());
+            stmt.executeUpdate();
+
             //conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Unable to add wall post.");
-            /*try {
-                conn.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
-            }*/
         } finally {
             if (conn != null) {
                 try {
@@ -58,17 +51,13 @@ public class WallPostDao implements IWallPostDao {
     public void getPostsByUser(String username) {
         wallPosts.clear();
         Connection conn = null;
-        Statement stmt = null;
+        PreparedStatement stmt = null;
         try {
             conn = dbm.establishConnection();
-            stmt = conn.createStatement();
+            stmt = conn.prepareStatement("SELECT * FROM wall_post WHERE wall_post.username = ?;");
+            stmt.setString(1, username);
 
-            String sql = "SELECT *\n" +
-                    "FROM wall_post\n" +
-                    "WHERE wall_post.username = '"+username+"';";
-            System.out.println(sql);
-
-            ResultSet rs = stmt.executeQuery(sql);
+            ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 wallPosts.add(new WallPost(rs.getString("username"), rs.getInt("id"),
                         rs.getString("content"), rs.getTimestamp("post_date")));
