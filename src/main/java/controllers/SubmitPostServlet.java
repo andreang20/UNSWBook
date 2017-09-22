@@ -18,7 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@WebServlet(urlPatterns = "/")
+@WebServlet(urlPatterns = "/create_post")
 public class SubmitPostServlet extends HttpServlet {
     public static int UNINIT_ID = -1;
 
