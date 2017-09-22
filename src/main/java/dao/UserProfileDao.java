@@ -93,6 +93,59 @@ public class UserProfileDao {
         }
     }
 
+    public boolean isUserNameExist(String username) throws SQLException {
+        Connection conn = null;
+        Statement stmt = null;
+        conn = dbm.establishConnection();
+        stmt = conn.createStatement();
+        String sql = "select username from user_profile where username = '" + username + "';";
+        ResultSet rs = stmt.executeQuery(sql);
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) { }
+        }
+//        if (stmt != null) {
+//            try {
+//                stmt.close();
+//            } catch (SQLException e) { }
+//        }
+        if (rs.next()) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+    public UserProfile Login(String username, String password) throws SQLException {
+        Connection conn = null;
+        Statement stmt = null;
+        conn = dbm.establishConnection();
+        stmt = conn.createStatement();
+        String sql = "select * from user_profile where username = '" + username + "' and password = '" +password + "';";
+        //String sql = "select * from user_profile where username = '" + username + "';";
+        ResultSet rs = stmt.executeQuery(sql);
+
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) { }
+        }
+
+        if (rs.next()) {
+            UserProfile userProfile = new UserProfile(rs.getString("username"), rs.getString("password"),
+                    rs.getString("first_name"), rs.getString("last_name"),
+                    rs.getString("email"), rs.getString("gender"),
+                    rs.getDate("date_of_birth"), rs.getInt("session_id"));
+            return userProfile;
+        }
+        else {
+            UserProfile userProfile = new UserProfile();
+            return userProfile;
+        }
+    }
+
     public void getFriends(String username) {
         userProfiles.clear();
         Connection conn = null;

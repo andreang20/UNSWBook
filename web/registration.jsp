@@ -6,6 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="db.DbManager" %>
+<%@ page import="java.sql.Connection" %>
+<%@ page import="java.sql.Statement" %>
+<%@ page import="java.sql.ResultSet" %>
+<%@ page import="dao.UserProfileDao" %>
+<%@ include file="navbar.html"%>
+
 <html>
 <head>
     <title>Registration</title>
@@ -24,7 +31,7 @@
 <body>
     <div class="reg-div-main">
         <div id="login_div" class="container">
-            <form action="/register" method="post">
+            <form action="/registration.jsp" method="post">
                 <div class="form-group">
                     <label>FirstName: </label>
                     <input type="text" class="form-control" id="firstname" name="firstname">
@@ -50,7 +57,33 @@
             </form>
         </div>
     </div>
+    <%
+        if (request.getParameter("username") != null) {
+            DbManager db = new DbManager();
+            Connection conn = db.establishConnection();
+            Statement stmt = conn.createStatement();
+            String user = request.getParameter("username");
 
+            String sql = "select username from user_profile as u where username = '" + user + "';";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            if (rs.next()) {
+                response.sendRedirect("/registration.jsp");
+            }
+            else {
+                request.getRequestDispatcher("/register").forward(request, response);
+
+            }
+        }
+//        String user = request.getParameter("username");
+//        UserProfileDao userProfileDao = new UserProfileDao(new DbManager());
+//        if (userProfileDao.isUserNameExist(user)) {
+//            request.getRequestDispatcher("registration.jsp").forward(request, response);
+//        }
+//        else {
+//            request.getRequestDispatcher("/register").forward(request, response);
+//        }
+    %>
 
 </body>
 </html>
