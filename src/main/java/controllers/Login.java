@@ -29,7 +29,7 @@ public class Login extends HttpServlet {
             UserProfile user = userProfileDao.Login(username, password);
             String uName = user.getUsername();
             if (uName == null) {
-                resp.sendRedirect("/login.jsp");
+                resp.sendRedirect("/index.html");
             }
             else {
                 req.getSession().setAttribute("username", uName);

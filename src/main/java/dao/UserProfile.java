@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class UserProfile {
     private String username;
@@ -90,5 +91,10 @@ public class UserProfile {
 
     public void setSession_id(int session_id) {
         this.session_id = session_id;
+    }
+
+    public String getFormattedDate() {
+        SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy");
+        return targetFormat.format(this.date);
     }
 }

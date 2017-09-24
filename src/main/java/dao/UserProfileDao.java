@@ -179,7 +179,121 @@ public class UserProfileDao {
             e.printStackTrace();
         }
 
+    }
 
+    public void editUserProfile(UserProfile userProfile) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("UPDATE user_profile " +
+                    "SET first_name = ?, last_name = ?, email = ?, gender = ?, " +
+                    "date_of_birth = ? " +
+                    "WHERE username = ?");
+            stmt.setString(1, userProfile.getFirstname());
+            stmt.setString(2, userProfile.getLastname());
+            stmt.setString(3, userProfile.getEmail());
+            stmt.setString(4, userProfile.getGender());
+            stmt.setDate(5, userProfile.getDate());
+            stmt.setString(6, userProfile.getUsername());
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Unable to edit user profile.");
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void editPassword(String password, String username) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("UPDATE user_profile " +
+                    "SET password = ? " +
+                    "WHERE username = ?");
+            stmt.setString(1, password);
+            stmt.setString(2, username);
+
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Unable to edit user profile.");
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public UserProfile getUserProfile(String username) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        UserProfile res = null;
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("SELECT * " +
+                    "FROM user_profile " +
+                    "WHERE username = ?;");
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+
+            if (!rs.next()) {
+                res = null;
+            } else {
+                res = new UserProfile(rs.getString("username"), rs.getString("password"),
+                        rs.getString("first_name"), rs.getString("last_name"),
+                        rs.getString("email"), rs.getString("gender"),
+                        rs.getDate("date_of_birth"), rs.getInt("session_id"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return res;
     }
 
 

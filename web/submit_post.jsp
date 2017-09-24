@@ -34,6 +34,10 @@
                 <label for="file">Image: </label>
                 <input type="file" class="form-control" id="file" name="file">
             </div>
+            <div class="form-group ">
+                <label for="change_first_name">First name: </label>
+                <input type="text" name="change_first_name" id="change_first_name" class="form-control">
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

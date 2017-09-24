@@ -15,6 +15,7 @@
           <element id="library" level="project" name="Maven: commons-logging:commons-logging:1.2" />
         </element>
       </element>
+      <element id="javaee-facet-resources" facet="UNSWbookA2/javaeeApplication/javaEEApplication" />
     </root>
   </artifact>
 </component>
