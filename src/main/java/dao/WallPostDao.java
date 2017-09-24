@@ -23,11 +23,12 @@ public class WallPostDao implements IWallPostDao {
         PreparedStatement stmt = null;
         try {
             conn = dbm.establishConnection();
-            stmt = conn.prepareStatement("INSERT INTO wall_post (username, content, post_date)" +
-                    " VALUES (?,?,?);");
+            stmt = conn.prepareStatement("INSERT INTO wall_post (username, content, post_date, img)" +
+                    " VALUES (?,?,?,?);");
             stmt.setString(1, wallPost.getUsername());
             stmt.setString(2, wallPost.getContent());
             stmt.setTimestamp(3, wallPost.getPostDate());
+            stmt.setString(4, wallPost.getImage());
             stmt.executeUpdate();
 
             //conn.commit();
@@ -59,8 +60,10 @@ public class WallPostDao implements IWallPostDao {
 
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                wallPosts.add(new WallPost(rs.getString("username"), rs.getInt("id"),
-                        rs.getString("content"), rs.getTimestamp("post_date")));
+                WallPost newPost = new WallPost(rs.getString("username"), rs.getInt("id"),
+                        rs.getString("content"), rs.getTimestamp("post_date"));
+                newPost.setImage(rs.getString("img"));
+                wallPosts.add(newPost);
             }
 
         } catch (SQLException e) {
@@ -102,8 +105,10 @@ public class WallPostDao implements IWallPostDao {
 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                wallPosts.add(new WallPost(rs.getString("username"), rs.getInt("id"),
-                        rs.getString("content"), rs.getTimestamp("post_date")));
+                WallPost newPost = new WallPost(rs.getString("username"), rs.getInt("id"),
+                        rs.getString("content"), rs.getTimestamp("post_date"));
+                newPost.setImage(rs.getString("img"));
+                wallPosts.add(newPost);
             }
 
         } catch (SQLException e) {

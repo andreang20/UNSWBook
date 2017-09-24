@@ -8,6 +8,7 @@ public class WallPost {
     private int id;
     private String content;
     private Timestamp postDate;
+    private String image;
 
     public WallPost() {
         this(null, -1, null, null);
@@ -50,6 +51,14 @@ public class WallPost {
 
     public void setPostDate(Timestamp postDate) {
         this.postDate = postDate;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getImage() {
+        return image;
     }
 }
 

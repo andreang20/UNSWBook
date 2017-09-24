@@ -13,6 +13,12 @@
 <html>
 <head>
     <title>Home</title>
+    <style>
+        .post_img {
+            width: 600px;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
 
@@ -40,6 +46,9 @@ Your Name is: <%= user.getFirstname()%> <%= user.getLastname()%>
             Content: <c:out value="${cur.getContent()}"/><br>
             Username: <c:out value="${cur.getUsername()}"/><br>
             Posted date: <c:out value="${cur.getPostDate()}"/><br><br>
+            <c:if test="${cur.getImage() != null}">
+                <img src="data:image/png;base64,${cur.getImage()}" class="post_img"/>
+            </c:if>
         </div>
     </c:forEach>
 </div>

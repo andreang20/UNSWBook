@@ -50,7 +50,7 @@ public class RegistrationServlet extends HttpServlet {
         try {
             UserProfileDao userProfileDao = new UserProfileDao(new DbManager());
             userProfileDao.addUserProfile(newProfile);
-            resp.sendRedirect("/login.jsp");
+            resp.sendRedirect("/login");
 
         } catch (Exception e) {
             e.printStackTrace();

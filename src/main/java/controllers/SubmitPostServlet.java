@@ -4,21 +4,23 @@ import dao.UserProfile;
 import dao.WallPost;
 import dao.WallPostDao;
 import db.DbManager;
-import db.IDbManager;
+import org.apache.commons.io.IOUtils;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
-import java.sql.SQLException;
+import java.io.InputStream;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Base64;
+
 
 @WebServlet(urlPatterns = "/create_post")
+@MultipartConfig
 public class SubmitPostServlet extends HttpServlet {
     public static int UNINIT_ID = -1;
 
@@ -36,10 +38,17 @@ public class SubmitPostServlet extends HttpServlet {
 
         // Get inserted parameters from form
         String content = req.getParameter("content");
-        byte[] imgBytes = null;
-        String imgStr = req.getParameter("img");
-        if (imgStr != null) {
-            imgBytes = imgStr.getBytes();
+
+        // image stuff
+        String base64img = null;
+        Part imgPart= req.getPart("file");
+
+        InputStream imgstream = imgPart.getInputStream();
+        byte[] imgBytes = IOUtils.toByteArray(imgstream);
+        base64img = new String(Base64.getEncoder().encode(imgBytes));
+        if (base64img.length() == 0) {
+            System.out.println("EMPTY");
+            base64img = null;
         }
 
         // Get current timestamp
@@ -48,6 +57,7 @@ public class SubmitPostServlet extends HttpServlet {
         System.out.println(content);
         // Do a write
         WallPost newPost = new WallPost(user.getUsername(), SubmitPostServlet.UNINIT_ID, content, ts);
+        newPost.setImage(base64img);
 
         // if success of the db write then redirect to wall
         try {
@@ -60,7 +70,7 @@ public class SubmitPostServlet extends HttpServlet {
         }
 
         // if fail, then redirect to same page
-        resp.sendRedirect("/home.jsp");
+        resp.sendRedirect("/home");
 
     }
 
