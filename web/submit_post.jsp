@@ -16,7 +16,7 @@
 </head>
 <body>
     <div id="login_div" class="container">
-        <form action="/submit_form" method="post">
+        <form action="/create_post" method="post">
             <div class="form-group ">
                 <label for="content">Content: </label>
                 <textarea name="content" id="content" class="form-control"></textarea>

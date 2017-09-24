@@ -15,7 +15,7 @@
     <title>Home</title>
 </head>
 <body>
-
+<a href="/logout">logout</a>
 <%
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     if (request.getSession().getAttribute("username") == null) {
