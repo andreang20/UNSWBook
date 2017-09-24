@@ -34,8 +34,8 @@ public class Login extends HttpServlet {
             else {
                 req.getSession().setAttribute("username", uName);
                 req.getSession().setAttribute("userprofile", user);
-                req.getRequestDispatcher("/home.jsp").forward(req, resp);
-                //resp.sendRedirect("/home");
+                //req.getRequestDispatcher("/home.jsp").forward(req, resp);
+                resp.sendRedirect("/home");
             }
 
 
