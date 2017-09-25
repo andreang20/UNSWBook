@@ -28,7 +28,7 @@ public class SubmitPostServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // Display the form
-        resp.sendRedirect("/submit_post.jsp");
+        req.getRequestDispatcher("/submit_post.jsp").forward(req,resp);
     }
 
     @Override
@@ -67,6 +67,7 @@ public class SubmitPostServlet extends HttpServlet {
             // error
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
+            return;
         }
 
         // if fail, then redirect to same page
