@@ -31,14 +31,13 @@
 %>
 <%
     String username = (String) request.getSession().getAttribute("username");
-    UserProfile user = (UserProfile) request.getSession().getAttribute("userprofile");
+    //UserProfile user = (UserProfile) request.getSession().getAttribute("userprofile"); dont store user profile in session because you will get outdate info, if you want it then do another query for it
     // to make sure that user is login
     ArrayList<WallPost> posts = (ArrayList<WallPost>) request.getAttribute("posts");
 %>
 <h1>Welcome <%= username%></h1>
 <hr />
-<h3>Your profile:</h3>
-Your Name is: <%= user.getFirstname()%> <%= user.getLastname()%>
+
 
 <div class="all_posts">
     <c:forEach items="${posts}" var="cur">
