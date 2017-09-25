@@ -27,12 +27,15 @@ public class UserWall extends HttpServlet {
             resp.sendRedirect("/GenericError.jsp");
         }
 
+
         WallPostDao wallPostDao = new WallPostDao(dbm);
         UserProfile user = (UserProfile) req.getSession().getAttribute("userprofile");
         wallPostDao.getUserWall(user.getUsername());
 
+
         ArrayList<WallPost> posts = wallPostDao.getWallPosts();
         req.setAttribute("posts", posts);
+
 
         req.getRequestDispatcher("/home.jsp").forward(req, resp);
     }
