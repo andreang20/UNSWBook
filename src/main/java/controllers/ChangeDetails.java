@@ -30,13 +30,8 @@ public class ChangeDetails extends HttpServlet{
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            String username = (String) req.getSession().getAttribute("username");
-            System.out.println(username);
-            UserProfile user = userProfileDao.getUserProfile(username);
-            if (user == null) {
-                System.err.println("Could not find user.");
-            }
 
+            UserProfile user = (UserProfile) req.getSession().getAttribute("userprofile");
             req.setAttribute("userprofile", user);
             req.getRequestDispatcher("/change_details.jsp").forward(req, resp);
         }

@@ -32,6 +32,11 @@ public class ChangePasswordPost extends HttpServlet{
         }
 
         userProfileDao.editPassword(new_password, username);
+
+        UserProfile user = userProfileDao.getUserProfile(username);
+        req.getSession().removeAttribute("userprofile");
+        req.getSession().setAttribute("userprofile", user);
+
         resp.sendRedirect("/my_profile/change_details");
     }
 }

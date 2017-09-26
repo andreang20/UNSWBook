@@ -47,6 +47,11 @@ public class ChangeUserDetailsPost extends HttpServlet{
         UserProfile userProfileContainer = new UserProfile(username, null, newFirstName, newLastName, newEmail, newGender, d, 0);
 
         userProfileDao.editUserProfile(userProfileContainer);
+
+        UserProfile user = userProfileDao.getUserProfile(username);
+        req.getSession().removeAttribute("userprofile");
+        req.getSession().setAttribute("userprofile", user);
+
         resp.sendRedirect("/my_profile/change_details");
     }
 }

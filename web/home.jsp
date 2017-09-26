@@ -24,7 +24,11 @@
             background-color: lightblue;
         }
     </style>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <a href="/logout">logout</a>
@@ -45,15 +49,15 @@
 <hr />
 
 
-<div class="all_posts container">
+<div class="all_posts">
     <c:forEach items="${posts}" var="cur">
-        <div class="post panel panel-default">
+        <div class="post">
             Content: <c:out value="${cur.getContent()}"/><br>
             Username: <c:out value="${cur.getUsername()}"/><br>
-            Posted date: <c:out value="${cur.getPostDate()}"/><br>
+            Posted date: <c:out value="${cur.getPostDate()}"/><br><br>
             <c:if test="${cur.getImage() != null}">
                 <img src="data:image/png;base64,${cur.getImage()}" class="post_img"/>
-            </c:if><br>
+            </c:if>
         </div>
     </c:forEach>
 </div>
