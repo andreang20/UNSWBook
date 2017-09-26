@@ -27,23 +27,13 @@
 </head>
 <body>
 <%@ include file="navbar.html"%>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    if (request.getSession().getAttribute("username") == null) {
-        //response.sendRedirect("login.jsp");
-        request.getRequestDispatcher("login.jsp").forward(request, response);
-    }
-%>
+
 <%
     String username = (String) request.getSession().getAttribute("username");
-    UserProfile user = (UserProfile) request.getSession().getAttribute("userprofile");
     // to make sure that user is login
     ArrayList<WallPost> posts = (ArrayList<WallPost>) request.getAttribute("posts");
 %>
 <h1>Welcome <%= username%></h1>
-<hr />
-<h3>Your profile:</h3>
-Your Name is: <%= user.getFirstname()%> <%= user.getLastname()%>
 
 <div class="all_posts">
     <c:forEach items="${posts}" var="cur">

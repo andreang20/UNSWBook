@@ -55,7 +55,6 @@ public class RegistrationServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
-
         }
 
 
