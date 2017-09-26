@@ -19,9 +19,14 @@
             height: auto;
         }
     </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<a href="/logout">logout</a>
+<%@ include file="navbar.html"%>
 <%
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     if (request.getSession().getAttribute("username") == null) {
@@ -31,13 +36,14 @@
 %>
 <%
     String username = (String) request.getSession().getAttribute("username");
-    //UserProfile user = (UserProfile) request.getSession().getAttribute("userprofile"); dont store user profile in session because you will get outdate info, if you want it then do another query for it
+    UserProfile user = (UserProfile) request.getSession().getAttribute("userprofile");
     // to make sure that user is login
     ArrayList<WallPost> posts = (ArrayList<WallPost>) request.getAttribute("posts");
 %>
 <h1>Welcome <%= username%></h1>
 <hr />
-
+<h3>Your profile:</h3>
+Your Name is: <%= user.getFirstname()%> <%= user.getLastname()%>
 
 <div class="all_posts">
     <c:forEach items="${posts}" var="cur">
