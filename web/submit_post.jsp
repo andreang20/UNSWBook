@@ -6,13 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    if (request.getSession().getAttribute("username") == null) {
-        //response.sendRedirect("login.jsp");
-        request.getRequestDispatcher("login.jsp").forward(request, response);
-    }
-%>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>

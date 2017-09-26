@@ -19,6 +19,7 @@ public class ChangeDetails extends HttpServlet{
         System.out.println((String) req.getSession().getAttribute("username"));
         if ((String) req.getSession().getAttribute("username") == null) {
             resp.sendRedirect("/index.html");
+            return;
             //req.getRequestDispatcher("/index.html").forward(req,resp);
         } else {
             // Get the user profile
