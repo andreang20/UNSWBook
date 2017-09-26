@@ -38,7 +38,6 @@ create table wall_post(
 create table user_like(
 	username varchar(60) not null,
 	wall_id int not null,
-	time_liked TIMESTAMP not null,
 	foreign key (username) references user_profile(username),
 	foreign key (wall_id) references wall_post(id),
 	primary key (username, wall_id)
@@ -59,9 +58,9 @@ create table friend_list(
 );
 
 -- user logs
-create table logs(
+create table log(
   log_id serial,
-  username varchar(60),
+  username varchar(60) not null,
   user_action varchar(1000) not null,
   time timestamp not null,
   PRIMARY KEY (log_id),

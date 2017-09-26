@@ -3,6 +3,7 @@ package controllers;
 import dao.UserProfile;
 import dao.UserProfileDao;
 import db.DbManager;
+import utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -50,12 +51,17 @@ public class RegistrationServlet extends HttpServlet {
         try {
             UserProfileDao userProfileDao = new UserProfileDao(new DbManager());
             userProfileDao.addUserProfile(newProfile);
-            resp.sendRedirect("/index.html");
 
+            // success
+            Utils utils = new Utils(new DbManager());
+            utils.logActionNow(userName, "User has registered.");
+
+            resp.sendRedirect("/index.html");
+            return;
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
-
+            return;
         }
 
 

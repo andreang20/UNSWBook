@@ -18,7 +18,13 @@
             width: 600px;
             height: auto;
         }
+        .panel {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-color: lightblue;
+        }
     </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
 </head>
 <body>
 <a href="/logout">logout</a>
@@ -39,15 +45,15 @@
 <hr />
 
 
-<div class="all_posts">
+<div class="all_posts container">
     <c:forEach items="${posts}" var="cur">
-        <div class="post">
+        <div class="post panel panel-default">
             Content: <c:out value="${cur.getContent()}"/><br>
             Username: <c:out value="${cur.getUsername()}"/><br>
-            Posted date: <c:out value="${cur.getPostDate()}"/><br><br>
+            Posted date: <c:out value="${cur.getPostDate()}"/><br>
             <c:if test="${cur.getImage() != null}">
                 <img src="data:image/png;base64,${cur.getImage()}" class="post_img"/>
-            </c:if>
+            </c:if><br>
         </div>
     </c:forEach>
 </div>
