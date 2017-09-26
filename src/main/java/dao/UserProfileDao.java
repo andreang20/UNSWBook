@@ -1,6 +1,8 @@
 package dao;
 
+import db.DbManager;
 import db.IDbManager;
+import utils.Utils;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -28,15 +30,19 @@ public class UserProfileDao {
             stmt.setString(4, userProfile.getLastname());
             stmt.setString(5, userProfile.getEmail());
             stmt.setString(6, userProfile.getGender());
-            System.out.println(userProfile.getDate());
             stmt.setDate(7, userProfile.getDate());
             stmt.setInt(8, userProfile.getSession_id());
 
-
             stmt.executeUpdate();
+
 
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             throw new RuntimeException("Unable to add user profile");
         } finally {
             if(conn != null) {
@@ -296,6 +302,51 @@ public class UserProfileDao {
         return res;
     }
 
+    public ArrayList<UserProfile> searchByUsername(String input) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ArrayList<UserProfile> res = null;
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("" +
+                    "select * " +
+                    "from user_profile " +
+                    "where lower(user_profile.username) like '%%' || lower(?) || '%%';");
+            stmt.setString(1, input);
+            ResultSet rs = stmt.executeQuery();
+            res = convertRsToArrayList(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return res;
+    }
+
+    private ArrayList<UserProfile> convertRsToArrayList(ResultSet rs) throws SQLException {
+        ArrayList<UserProfile> res = new ArrayList<UserProfile>();
+        while(rs.next()) {
+            UserProfile cur = new UserProfile(rs.getString("username"), rs.getString("password"),
+                    rs.getString("first_name"), rs.getString("last_name"),
+                    rs.getString("email"), rs.getString("gender"),
+                    rs.getDate("date_of_birth"), rs.getInt("session_id"));
+            res.add(cur);
+        }
+        return res;
+    }
 
 }
 

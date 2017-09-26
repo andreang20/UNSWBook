@@ -19,6 +19,11 @@ import java.util.ArrayList;
 public class UserWall extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if ((String) req.getSession().getAttribute("username") == null) {
+            resp.sendRedirect("/index.html");
+            return;
+        }
+
         IDbManager dbm = null;
         try {
             dbm = new DbManager();
@@ -27,7 +32,6 @@ public class UserWall extends HttpServlet {
             resp.sendRedirect("/GenericError.jsp");
             return;
         }
-
 
         WallPostDao wallPostDao = new WallPostDao(dbm);
         String username = (String) req.getSession().getAttribute("username");

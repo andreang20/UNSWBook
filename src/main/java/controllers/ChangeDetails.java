@@ -16,7 +16,6 @@ import java.sql.SQLException;
 public class ChangeDetails extends HttpServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println((String) req.getSession().getAttribute("username"));
         if ((String) req.getSession().getAttribute("username") == null) {
             resp.sendRedirect("/index.html");
             return;

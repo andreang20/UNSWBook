@@ -75,7 +75,6 @@ public class SubmitPostServlet extends HttpServlet {
 
         // then redirect to same page
         resp.sendRedirect("/home");
-
     }
 
 }

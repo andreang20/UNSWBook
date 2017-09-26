@@ -18,6 +18,11 @@
             width: 600px;
             height: auto;
         }
+        .panel {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            background-color: lightblue;
+        }
     </style>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,14 +31,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<%@ include file="navbar.html"%>
-
+<a href="/logout">logout</a>
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    if (request.getSession().getAttribute("username") == null) {
+        //response.sendRedirect("login.jsp");
+        request.getRequestDispatcher("login.jsp").forward(request, response);
+    }
+%>
 <%
     String username = (String) request.getSession().getAttribute("username");
+    //UserProfile user = (UserProfile) request.getSession().getAttribute("userprofile"); dont store user profile in session because you will get outdate info, if you want it then do another query for it
     // to make sure that user is login
     ArrayList<WallPost> posts = (ArrayList<WallPost>) request.getAttribute("posts");
 %>
 <h1>Welcome <%= username%></h1>
+<hr />
+
 
 <div class="all_posts">
     <c:forEach items="${posts}" var="cur">
