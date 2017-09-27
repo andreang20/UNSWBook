@@ -34,7 +34,7 @@ public class SearchDAO {
         String username = userProfile.getUsername();
         //String sql = "select username, concat(first_name,' ',last_name) as name, gender, date_of_birth " +
         //       "from unswbook.user_profile where username != '" + username + "';";
-        String sql = "select lower(concat(first_name,' ',last_name)) as name, gender, date_of_birth " +
+        String sql = "select lower(concat(first_name,' ',last_name)) as name, username, gender, date_of_birth " +
         "from user_profile where username != '" + username + "';";
         ResultSet rs = stmt.executeQuery(sql);
 
