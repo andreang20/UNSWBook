@@ -36,9 +36,14 @@
                 Email: <c:out value="${cur.getEmail()}"/><br>
                 Gender: <c:out value="${cur.getGender()}"/><br>
                 Date of birth: <c:out value="${cur.getFormattedDate()}"/><br>
+                is_banned: <c:out value="${cur.getIs_banned()}"/><br>
                 <form action="/admin/userlog" method="get">
                     <input type="hidden" name="log_username" value="${cur.getUsername()}"/>
                     <button type="submit">See user log</button>
+                </form>
+                <form action="/admin/ban" method="get">
+                    <input type="hidden" name="ban_user" value="${cur.getUsername()}">
+                    <button type="submit">Ban user</button>
                 </form>
             </div>
         </c:forEach>

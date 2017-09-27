@@ -31,39 +31,27 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-<a href="/logout">logout</a>
-<%
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-    if (request.getSession().getAttribute("username") == null) {
-        //response.sendRedirect("login.jsp");
-        request.getRequestDispatcher("login.jsp").forward(request, response);
-    }
-%>
 <%
     String username = (String) request.getSession().getAttribute("username");
-    //UserProfile user = (UserProfile) request.getSession().getAttribute("userprofile"); dont store user profile in session because you will get outdate info, if you want it then do another query for it
-    // to make sure that user is login
+    UserProfile user = (UserProfile) request.getSession().getAttribute("userprofile");
     ArrayList<WallPost> posts = (ArrayList<WallPost>) request.getAttribute("posts");
 %>
+<%@include file="navbar.html"%>
 <h1>Welcome <%= username%></h1>
 <hr />
 
-
-<div class="all_posts">
+<div class="all_posts container">
     <c:forEach items="${posts}" var="cur">
-        <div class="post">
+        <div class="post panel panel-default">
             Content: <c:out value="${cur.getContent()}"/><br>
             Username: <c:out value="${cur.getUsername()}"/><br>
-            Posted date: <c:out value="${cur.getPostDate()}"/><br><br>
+            Posted date: <c:out value="${cur.getPostDate()}"/><br>
             <c:if test="${cur.getImage() != null}">
                 <img src="data:image/png;base64,${cur.getImage()}" class="post_img"/>
-            </c:if>
+            </c:if><br>
         </div>
     </c:forEach>
 </div>
-
-
-
 
 
 </body>

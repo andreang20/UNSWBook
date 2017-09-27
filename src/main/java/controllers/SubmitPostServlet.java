@@ -5,6 +5,7 @@ import dao.WallPost;
 import dao.WallPostDao;
 import db.DbManager;
 import org.apache.commons.io.IOUtils;
+import utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Base64;
 
@@ -71,6 +73,16 @@ public class SubmitPostServlet extends HttpServlet {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
             return;
+        }
+
+        // log
+        try {
+            Utils utils = new Utils(new DbManager());
+            utils.logActionNow(username, "User has posted '"+content+"' on wall.");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         // then redirect to same page

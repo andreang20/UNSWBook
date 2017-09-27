@@ -12,9 +12,18 @@ public class UserProfile {
     private String gender;
     private Date date;
     private int session_id;
+    private boolean is_banned;
+
+    public boolean getIs_banned() {
+        return is_banned;
+    }
+
+    public void setIs_banned(boolean is_banned) {
+        this.is_banned = is_banned;
+    }
 
     public UserProfile() {
-        this(null,null,null,null,null,null,null, -1);
+        this(null,null,null,null,null,null,null, -1, false);
     }
 
     public String getFirstname() {
@@ -34,7 +43,7 @@ public class UserProfile {
     }
 
     public UserProfile(String username, String password, String firstname, String lastname,
-                       String email, String gender, Date date, int session_id) {
+                       String email, String gender, Date date, int session_id, boolean is_banned) {
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -43,6 +52,7 @@ public class UserProfile {
         this.gender = gender;
         this.date = date;
         this.session_id = session_id;
+        this.is_banned = is_banned;
     }
 
     public String getUsername() {
