@@ -82,7 +82,7 @@ create table request(
 	id serial,
 	sender varchar(60) not null,
 	receiver varchar(60) not null,
-	accepted boolean not null
+	accepted boolean not null,
 	primary key (id),
 	foreign key (sender) references user_profile(username),
 	foreign key (receiver) references user_profile(username)
