@@ -3,6 +3,7 @@ package controllers;
 import dao.UserProfile;
 import dao.UserProfileDao;
 import db.DbManager;
+import utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -42,15 +43,26 @@ public class ChangeUserDetailsPost extends HttpServlet{
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        UserProfile old = (UserProfile) req.getSession().getAttribute("userprofile");
 
         // put inside UserProfile and pass into edit method
-        UserProfile userProfileContainer = new UserProfile(username, null, newFirstName, newLastName, newEmail, newGender, d, 0);
+        UserProfile userProfileContainer = new UserProfile(username, null, newFirstName, newLastName, newEmail, newGender, d, 0, old.getIs_banned());
 
         userProfileDao.editUserProfile(userProfileContainer);
 
         UserProfile user = userProfileDao.getUserProfile(username);
         req.getSession().removeAttribute("userprofile");
         req.getSession().setAttribute("userprofile", user);
+
+        // log changed details
+        try {
+            Utils utils = new Utils(new DbManager());
+            utils.logActionNow(user.getUsername(), "User has changed user details.");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         resp.sendRedirect("/my_profile/change_details");
     }

@@ -24,6 +24,8 @@ public class AdminLogin extends HttpServlet {
             req.getSession().setAttribute("is_admin", true);
             resp.sendRedirect("/admin/home");
             return;
+        } else {
+            resp.sendRedirect("/admin");
         }
     }
 }

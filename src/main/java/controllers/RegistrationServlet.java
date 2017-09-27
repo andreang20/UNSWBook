@@ -34,21 +34,20 @@ public class RegistrationServlet extends HttpServlet {
         String dob = req.getParameter("dob");
         String userName = req.getParameter("username");
         String password = req.getParameter("password");
-
-        Date date = null;
         try {
-            date = new SimpleDateFormat("dd/MM/yyyy").parse(dob);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("dd/MM/yyyy").parse(dob);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-        java.sql.Date d = new java.sql.Date(date.getTime());
+            java.sql.Date d = new java.sql.Date(date.getTime());
 
-        //int session_id = Integer.parseInt(req.getSession().getId());
-        int session_id = 0;
-        UserProfile newProfile = new UserProfile(userName, password, firstName, lastName, email, gender, d, session_id);
+            //int session_id = Integer.parseInt(req.getSession().getId());
+            int session_id = 0;
+            UserProfile newProfile = new UserProfile(userName, password, firstName, lastName, email, gender, d, session_id, false);
 
-        try {
             UserProfileDao userProfileDao = new UserProfileDao(new DbManager());
             userProfileDao.addUserProfile(newProfile);
 

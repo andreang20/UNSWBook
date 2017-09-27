@@ -16,7 +16,7 @@ import java.io.IOException;
 public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doPost(req, resp);
+
     }
 
     @Override
@@ -30,19 +30,22 @@ public class Login extends HttpServlet {
             String uName = user.getUsername();
             if (uName == null) {
                 resp.sendRedirect("/index.html");
-            }
-            else {
+                return;
+            } else if (user.getIs_banned()) {
+                resp.sendRedirect("/UserLoginBanned.jsp");
+                return;
+            } else {
                 req.getSession().setAttribute("username", uName);
                 req.getSession().setAttribute("userprofile", user);
                 //req.getRequestDispatcher("/home.jsp").forward(req, resp);
                 resp.sendRedirect("/home");
+                return;
             }
-
 
         } catch (Exception e) {
             e.printStackTrace();
-            //resp.sendRedirect("/GenericError.jsp");
-
+            resp.sendRedirect("/GenericError.jsp");
+            return;
         }
     }
 }

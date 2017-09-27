@@ -4,6 +4,8 @@
  drop table user_like CASCADE;
  drop table friend_list CASCADE;
  drop table logs CASCADE;
+ drop table notification CASCADE;
+
 
  -- user profile related sql --
  create table user_profile (
@@ -15,6 +17,7 @@
  	gender varchar(20) not null,
  	date_of_birth date not null,
  	session_id int,
+ 	is_banned boolean not null,
  	primary key(username),
  	constraint chk_gender check
  	(gender = 'male' or gender = 'female')
@@ -64,5 +67,15 @@ create table log(
   user_action varchar(1000) not null,
   time timestamp not null,
   PRIMARY KEY (log_id),
+  FOREIGN KEY (username) REFERENCES  user_profile(username)
+);
+
+
+create table notification(
+  notification_id serial,
+  username varchar(60) not null,
+  user_action varchar(1000) not null,
+  time timestamp not null,
+  PRIMARY KEY (notification_id),
   FOREIGN KEY (username) REFERENCES  user_profile(username)
 );

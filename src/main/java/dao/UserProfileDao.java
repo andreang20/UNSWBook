@@ -21,8 +21,8 @@ public class UserProfileDao {
         PreparedStatement stmt = null;
         try {
             conn = dbm.establishConnection();
-            stmt = conn.prepareStatement("INSERT INTO user_profile (username, password, first_name, last_name, email, gender, date_of_birth, session_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
+            stmt = conn.prepareStatement("INSERT INTO user_profile (username, password, first_name, last_name, email, gender, date_of_birth, session_id, is_banned) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
             stmt.setString(1, userProfile.getUsername());
             stmt.setString(2, userProfile.getPassword());
@@ -32,6 +32,7 @@ public class UserProfileDao {
             stmt.setString(6, userProfile.getGender());
             stmt.setDate(7, userProfile.getDate());
             stmt.setInt(8, userProfile.getSession_id());
+            stmt.setBoolean(9, userProfile.getIs_banned());
 
             stmt.executeUpdate();
 
@@ -80,7 +81,7 @@ public class UserProfileDao {
                 userProfiles.add(new UserProfile(rs.getString("username"), rs.getString("password"),
                         rs.getString("first_name"), rs.getString("last_name"),
                         rs.getString("email"), rs.getString("gender"),
-                        rs.getDate("date_of_birth"), rs.getInt("session_id")));
+                        rs.getDate("date_of_birth"), rs.getInt("session_id"), rs.getBoolean("is_banned")));
             }
 
         } catch (SQLException e) {
@@ -143,7 +144,7 @@ public class UserProfileDao {
             UserProfile userProfile = new UserProfile(rs.getString("username"), rs.getString("password"),
                     rs.getString("first_name"), rs.getString("last_name"),
                     rs.getString("email"), rs.getString("gender"),
-                    rs.getDate("date_of_birth"), rs.getInt("session_id"));
+                    rs.getDate("date_of_birth"), rs.getInt("session_id"), rs.getBoolean("is_banned"));
             return userProfile;
         }
         else {
@@ -178,7 +179,7 @@ public class UserProfileDao {
                 userProfiles.add(new UserProfile(rs.getString("username"), rs.getString("password"),
                         rs.getString("first_name"), rs.getString("last_name"),
                         rs.getString("email"), rs.getString("gender"),
-                        rs.getDate("date_of_birth"), rs.getInt("session_id")));
+                        rs.getDate("date_of_birth"), rs.getInt("session_id"), rs.getBoolean("is_banned")));
             }
 
         } catch (SQLException e) {
@@ -278,7 +279,7 @@ public class UserProfileDao {
                 res = new UserProfile(rs.getString("username"), rs.getString("password"),
                         rs.getString("first_name"), rs.getString("last_name"),
                         rs.getString("email"), rs.getString("gender"),
-                        rs.getDate("date_of_birth"), rs.getInt("session_id"));
+                        rs.getDate("date_of_birth"), rs.getInt("session_id"), rs.getBoolean("is_banned"));
             }
 
         } catch (SQLException e) {
@@ -342,10 +343,46 @@ public class UserProfileDao {
             UserProfile cur = new UserProfile(rs.getString("username"), rs.getString("password"),
                     rs.getString("first_name"), rs.getString("last_name"),
                     rs.getString("email"), rs.getString("gender"),
-                    rs.getDate("date_of_birth"), rs.getInt("session_id"));
+                    rs.getDate("date_of_birth"), rs.getInt("session_id"), rs.getBoolean("is_banned"));
             res.add(cur);
         }
         return res;
+    }
+
+    public void updateIsBannedStatus(String username, boolean is_banned) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("" +
+                    "UPDATE user_profile " +
+                    "SET is_banned = ? " +
+                    "WHERE username = ?;");
+            stmt.setBoolean(1, is_banned);
+            stmt.setString(2, username);
+
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Unable to update banned status.");
+        } finally {
+            if(conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

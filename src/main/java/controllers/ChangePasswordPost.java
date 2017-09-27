@@ -3,6 +3,7 @@ package controllers;
 import dao.UserProfile;
 import dao.UserProfileDao;
 import db.DbManager;
+import utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,6 +37,16 @@ public class ChangePasswordPost extends HttpServlet{
         UserProfile user = userProfileDao.getUserProfile(username);
         req.getSession().removeAttribute("userprofile");
         req.getSession().setAttribute("userprofile", user);
+
+        // log changed password
+        try {
+            Utils utils = new Utils(new DbManager());
+            utils.logActionNow(user.getUsername(), "User has changed password.");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         resp.sendRedirect("/my_profile/change_details");
     }

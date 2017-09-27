@@ -7,14 +7,17 @@
       <a class="navbar-brand" href="#">UNSWBook</a>
     </div>
     <ul class="nav navbar-nav">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Search</a></li>
+      <li><a href="/home">Home</a></li>
+      <li><a href="/create_post">Create post</a></li>
+      <li><a href="/my_profile/change_details">Change my details</a></li>
+      <li><a href="/search.jsp">Search for friends</a></li>
+
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <!-- If conditional statement here (explanation bellow) -->
-      <li><a href="#" data-toggle="modal" data-target="#SignUp" ><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-      <li><a href="#" data-toggle="modal" data-target="#Login" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      <!--<li><a href="#" data-toggle="modal" data-target="#SignUp" ><span class="glyphicon glyphicon-user"></span> Sign Up</a></li> -->
+      <!--<li><a href="#" data-toggle="modal" data-target="#Login" ><span class="glyphicon glyphicon-log-in"></span> Login</a></li> -->
+      <li><a href="/logout">Logout</a></li>
     </ul>
   </div>
 </nav>
@@ -23,11 +26,9 @@
 <!-- If statement will be needed to check if the user already online, if yes
 Login and Sign Up change to Logout (TO DO Later)
 -->
-
-<!-- Modal for Sign Up -->
+<!--
 <div id="SignUp" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -44,12 +45,9 @@ Login and Sign Up change to Logout (TO DO Later)
     </div>
   </div>
 </div>
-<!-- End of Sign Up modal -->
 
-<!-- Modal for Login-->
 <div id="Login" class="modal fade" role="dialog">
   <div class="modal-dialog">
-    <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -66,4 +64,4 @@ Login and Sign Up change to Logout (TO DO Later)
     </div>
   </div>
 </div>
-<!-- Login modal end -->
+-->
