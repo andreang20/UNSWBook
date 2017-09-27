@@ -18,7 +18,7 @@
 <body>
 <%@ include file="navbar.html"%>
 <div class="container">
-    <form class="form-group" action="/search" method="post">
+    <form class="form-group" action="/result" method="post">
         <input placeholder="Enter name" type="text" name="keyname" class="form-control"/><br>
         <input placeholder="Enter gender" type="text" name="keygender" class="form-control"/><br>
         <input placeholder="Enter date of birth" type="text" name="keyDOB" class="form-control"/><br>

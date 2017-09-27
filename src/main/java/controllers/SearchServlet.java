@@ -49,13 +49,16 @@ public class SearchServlet extends HttpServlet {
             if (result.size() == 0)
             {
                 resp.sendRedirect("/GenericError.jsp");
+                return;
             }
             req.setAttribute("result", result);
             req.getRequestDispatcher("/result.jsp").forward(req, resp);
+            return;
         } catch (Exception e) {
         // error
         e.printStackTrace();
         resp.sendRedirect("/GenericError.jsp");
+        return;
         }
 
     }
