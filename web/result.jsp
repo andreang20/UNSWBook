@@ -23,13 +23,32 @@
 <%
     ArrayList<Search> result = (ArrayList<Search>) request.getAttribute("result");
 %>
-<form method="post" action="/add">
-<ul class="list-group">
-    <c:forEach items="${result}" var="cur">
-        <li class="list-group-item"><c:out value="${cur.getName()}"/> <button type = "submit" class="btn-btn-default pull-right" id="right-panel-link" href="#right-panel">+ Add Friend</button> </li>
-    </c:forEach>
-</ul>
-</form>
+<!--form method="post" action="/add"-->
+    <div class="panel-group" id="accordion">
+        <c:forEach items="${result}" var="cur">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#${cur.getUsername()}">
+                            <c:out value="${cur.getName()}"/>
+                        </a>
+                        <c:if test="${cur.getFriend() == false}">
+                            <button type = "submit" class="btn-btn-default pull-right" id="right-panel-link" href="#right-panel">+ Add Friend</button>
+                        </c:if>
+                    </h4>
+                </div>
+                <div id="${cur.getUsername()}" class= "panel-collapse collapse">
+                    <div class="panel-body">
+                        Username: <c:out value="${cur.getUsername()}"/><br>
+                        Name: <c:out value="${cur.getName()}"/><br>
+                        Gender: <c:out value="${cur.getGender()}"/><br>
+                        Date of Birth: <c:out value="${cur.getDOB()}"/>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+    </div>
+<!--/form-->
 
 </body>
 </html>
