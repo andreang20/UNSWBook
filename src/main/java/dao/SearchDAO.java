@@ -25,27 +25,55 @@ public class SearchDAO {
          * do search
          **/
         ArrayList<Search> result = new ArrayList<Search>();
+        ArrayList<String> friend = new ArrayList<String>();
         ArrayList<Search> temp = new ArrayList<Search>();
         Connection conn = null;
         Statement stmt = null;
         conn = dbm.establishConnection();
         stmt = conn.createStatement();
         String username = userProfile.getUsername();
-        //String sql = "select concat(first_name,' ',last_name) as name, gender, date_of_birth " +
-          //      "from unswbook.user_profile where username != '" + username + "';";
+        //String sql = "select username, concat(first_name,' ',last_name) as name, gender, date_of_birth " +
+        //       "from unswbook.user_profile where username != '" + username + "';";
         String sql = "select lower(concat(first_name,' ',last_name)) as name, gender, date_of_birth " +
         "from user_profile where username != '" + username + "';";
         ResultSet rs = stmt.executeQuery(sql);
+
+        //convert 1st search result to array list
+        while (rs.next()) {
+            Search s = new Search(rs.getString("username"),rs.getString("name"), rs.getString("gender"),
+                    rs.getString("date_of_birth"));
+            result.add(s);
+        }
+
+        //check search result is friend or not
+        //String sql2 = "select username_secondary from unswbook.friend_list where username_primary = '"+ username +"'; ";
+        String sql2 = "select username_secondary from friend_list where username_primary = '"+username +"'; ";
+        ResultSet rs2 = stmt.executeQuery(sql2);
+
+        //convert 2nd friend result to array list
+        while (rs2.next()) {
+            String f = rs2.getString("username_secondary");
+            friend.add(f);
+        }
+
+        //close connection
         if (conn != null) {
             try {
                 conn.close();
             }
             catch (SQLException e) { }
         }
-        while (rs.next()) {
-            Search s = new Search(rs.getString("name"), rs.getString("gender"),
-                    rs.getString("date_of_birth"));
-            result.add(s);
+
+        //nested loop to fiend all friend
+        for (Search s: result)
+        {
+            for (String f : friend)
+            {
+                if(f.equals(s.getUsername()))
+                {
+                    s.setFriend(true);
+                }
+            }
         }
             //search base on name
         if(name != null && !name.isEmpty())
@@ -84,6 +112,7 @@ public class SearchDAO {
             result = temp;
         }
 
+        //check the result
         for(Search s: result)
         {
             System.out.println(s.getName());
