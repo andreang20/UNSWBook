@@ -164,7 +164,7 @@ public class UserProfileDao {
                     "from\n" +
                     "(select friend_list.username_secondary\n" +
                     "from friend_list\n" +
-                    "where friend_list.username_primary = ? and friend_list.accepted = TRUE) t1\n" +
+                    "where friend_list.username_primary = ? t1\n" +
                     "inner join\n" +
                     "(select *\n" +
                     "from user_profile) t2\n" +

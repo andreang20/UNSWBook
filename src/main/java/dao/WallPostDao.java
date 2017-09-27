@@ -97,7 +97,7 @@ public class WallPostDao implements IWallPostDao {
                     "WHERE wall_post.username = ? OR wall_post.username in\n" +
                     "\t(select username\n" +
                     "\t FROM friend_list\n" +
-                    "\t WHERE friend_list.username_primary = ? and friend_list.accepted = TRUE\n" +
+                    "\t WHERE friend_list.username_primary = ? \n" +
                     "\t)\n" +
                     "ORDER BY wall_post.post_date desc;");
             stmt.setString(1, username);

@@ -46,16 +46,16 @@
         <div class="form-group ">
             <label for="change_gender">Gender: </label>
             <select class="form-control" id="change_gender" name="change_gender">
-                <option>male</option>
+                <option>Male</option>
                 <option
                         <%
-                            if (userProfile.getGender().equals("female")) {
+                            if (userProfile.getGender().equals("Female")) {
                         %>
                         selected="selected"
                         <%
                             }
                         %>
-                >female
+                >Female
                 </option>
             </select>
         </div>
