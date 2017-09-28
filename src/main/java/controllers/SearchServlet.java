@@ -46,11 +46,11 @@ public class SearchServlet extends HttpServlet {
             //System.out.println("start Search ");
             result = sdao.searchUser(name, gender, DOB);
             //System.out.println("end Search ");
-            if (result.size() == 0)
+            /*if (result.size() == 0)
             {
                 resp.sendRedirect("/GenericError.jsp");
                 return;
-            }
+            }*/
             req.setAttribute("result", result);
             req.getRequestDispatcher("/result.jsp").forward(req, resp);
             return;

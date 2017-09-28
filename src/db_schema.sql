@@ -60,18 +60,19 @@ create table friend_list(
 create table log(
 	log_id serial,
 	username varchar(60) not null,
-	user_action varchar(1000) not null,
+	user_action text not null,
 	time timestamp not null,
 	PRIMARY KEY (log_id),
 	FOREIGN KEY (username) REFERENCES  user_profile(username)
 );
 
 
-create table notification(
+create table notification (
 	notification_id serial,
 	username varchar(60) not null,
-	user_action varchar(1000) not null,
+	user_action text not null,
 	time timestamp not null,
+	has_seen boolean not null,
 	PRIMARY KEY (notification_id),
 	FOREIGN KEY (username) REFERENCES  user_profile(username)
 );

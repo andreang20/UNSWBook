@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 public class WallPost {
     private String username;
@@ -9,6 +10,7 @@ public class WallPost {
     private String content;
     private Timestamp postDate;
     private String image;
+    private ArrayList<Like> likes;
 
     public WallPost() {
         this(null, -1, null, null);
@@ -19,6 +21,14 @@ public class WallPost {
         this.id = id;
         this.content = content;
         this.postDate = postDate;
+    }
+
+    public ArrayList<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(ArrayList<Like> likes) {
+        this.likes = likes;
     }
 
     public String getUsername() {
