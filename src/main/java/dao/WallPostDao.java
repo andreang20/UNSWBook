@@ -5,7 +5,7 @@ import db.IDbManager;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class WallPostDao implements IWallPostDao {
+public class WallPostDao {
     private ArrayList<WallPost> wallPosts;
     IDbManager dbm;
 
@@ -49,7 +49,7 @@ public class WallPostDao implements IWallPostDao {
         }
     }
 
-    public void getPostsByUser(String username) {
+    /*public void getPostsByUser(String username) {
         wallPosts.clear();
         Connection conn = null;
         PreparedStatement stmt = null;
@@ -80,7 +80,7 @@ public class WallPostDao implements IWallPostDao {
                 } catch (SQLException e) { }
             }
         }
-    }
+    }*/
 
     /**
      * Gets wall posts of user and friends and sorts in order (desc) by timestamp
@@ -108,6 +108,9 @@ public class WallPostDao implements IWallPostDao {
                 WallPost newPost = new WallPost(rs.getString("username"), rs.getInt("id"),
                         rs.getString("content"), rs.getTimestamp("post_date"));
                 newPost.setImage(rs.getString("img"));
+                // need to store the likes.
+                LikeDao likeDao = new LikeDao(dbm);
+                newPost.setLikes(likeDao.getLikes(newPost.getId()));
                 wallPosts.add(newPost);
             }
 
@@ -125,7 +128,38 @@ public class WallPostDao implements IWallPostDao {
                 } catch (SQLException e) { }
             }
         }
+    }
 
+    public WallPost getPostsById(int id) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        WallPost res = null;
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("SELECT * FROM wall_post WHERE wall_post.id = ?;");
+            stmt.setInt(1, id);
+
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+           res = new WallPost(rs.getString("username"), rs.getInt("id"),
+                    rs.getString("content"), rs.getTimestamp("post_date"));
+           res.setImage(rs.getString("img"));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) { }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) { }
+            }
+        }
+        return res;
     }
 
 

@@ -45,10 +45,11 @@ public class SearchDAO {
             result.add(s);
         }
 
+        Statement stmt1 = conn.createStatement();
         //check search result is friend or not
         //String sql2 = "select username_secondary from unswbook.friend_list where username_primary = '"+ username +"'; ";
         String sql2 = "select username_secondary from friend_list where username_primary = '"+username +"'; ";
-        ResultSet rs2 = stmt.executeQuery(sql2);
+        ResultSet rs2 = stmt1.executeQuery(sql2);
 
         //convert 2nd friend result to array list
         while (rs2.next()) {
