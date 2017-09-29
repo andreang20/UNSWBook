@@ -1,14 +1,14 @@
 <%--
   Created by IntelliJ IDEA.
   User: andreang
-  Date: 9/26/17
-  Time: 4:59 PM
+  Date: 9/29/17
+  Time: 3:11 PM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Search</title>
+    <title>No Result</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -17,14 +17,8 @@
 </head>
 <body>
 <%@ include file="navbar.html"%>
-<div class="container">
-    <form class="form-group" action="/result" method="post">
-        <input placeholder="Enter name" type="text" name="keyname" class="form-control"/><br>
-        <input placeholder="Enter gender: Male or Female" type="text" name="keygender" class="form-control"/><br>
-        <input placeholder="Enter date of birth: yyyy-mm-dd" type="text" name="keyDOB" class="form-control"/><br>
-        <button type="submit" class="btn btn-default">Search</button>
-    </form>
-</div>
-
+<h1>
+    Sorry, No Matching Keyword is Found!!
+</h1>
 </body>
 </html>

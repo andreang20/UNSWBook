@@ -23,21 +23,18 @@
 <%
     ArrayList<Search> result = (ArrayList<Search>) request.getAttribute("result");
 %>
-<!--form method="post" action="/add"-->
+<form method="post" action="/add">
     <div class="panel-group" id="accordion">
         <c:forEach items="${result}" var="cur">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#${cur.getUsername()}">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#${cur.getUsername()}"}" >
                             <c:out value="${cur.getName()}"/>
                         </a>
                         <c:if test="${cur.getFriend() == false}">
-                            <!--<button type = "submit" class="btn-btn-default pull-right" id="right-panel-link" href="#right-panel">+ Add Friend</button>-->
-                            <form action="/send_request" method="post">
-                                <input type="hidden" name="receiver" value="${cur.getUsername()}">
-                                <button type = "submit" class="btn-btn-default pull-right" id="right-panel-link">+ Add Friend</button>
-                            </form>
+                            <input type = "hidden" name = "user" value = "${cur.getUsername()}"/>
+                            <button type = "submit" class="btn-btn-default pull-right" id="right-panel-link" href="#right-panel">+ Add Friend</button>
                         </c:if>
                     </h4>
                 </div>
@@ -52,7 +49,7 @@
             </div>
         </c:forEach>
     </div>
-<!--/form-->
+</form>
 
 </body>
 </html>
