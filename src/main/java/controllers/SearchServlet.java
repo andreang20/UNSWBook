@@ -22,7 +22,7 @@ public class SearchServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
+        doPost(req, resp);
 
     }
 
@@ -46,19 +46,21 @@ public class SearchServlet extends HttpServlet {
             //System.out.println("start Search ");
             result = sdao.searchUser(name, gender, DOB);
             //System.out.println("end Search ");
-            /*if (result.size() == 0)
+            if (result.size() == 0)
             {
-                resp.sendRedirect("/GenericError.jsp");
-                return;
-            }*/
-            req.setAttribute("result", result);
-            req.getRequestDispatcher("/result.jsp").forward(req, resp);
-            return;
+                System.out.println("There is no result");
+                resp.sendRedirect("/noResult.jsp");
+            }else
+            {
+                System.out.println("There is result");
+                req.setAttribute("result", result);
+                req.getRequestDispatcher("/result.jsp").forward(req,resp);
+            }
+
         } catch (Exception e) {
         // error
         e.printStackTrace();
         resp.sendRedirect("/GenericError.jsp");
-        return;
         }
 
     }
