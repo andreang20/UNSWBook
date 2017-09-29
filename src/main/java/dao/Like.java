@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.ArrayList;
+
 public class Like {
     private int wall_id;
     private String username;
@@ -23,6 +25,6 @@ public class Like {
     public Like(int wall_id, String username) {
         this.wall_id = wall_id;
         this.username = username;
-
     }
+
 }

@@ -83,4 +83,38 @@ public class LikeDao {
             }
         }
     }
+
+    public void removeLike(Like like) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("" +
+                    "delete from user_like " +
+                    "where username = ? and wall_id = ?;");
+            stmt.setString(1, like.getUsername());
+            stmt.setInt(2, like.getWall_id());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Unable to remove like.");
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
