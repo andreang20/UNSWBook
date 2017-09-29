@@ -49,10 +49,19 @@
             <c:if test="${cur.getImage() != null}">
                 <img src="data:image/png;base64,${cur.getImage()}" class="post_img"/>
             </c:if><br>
-            <form action="/like" method="post">
-                <input type="hidden" name="wall_id" value="${cur.getId()}">
-                <button type="submit">Like</button>
-            </form>
+            <c:if test="${!cur.hasLiked(username)}">
+                <form action="/like" method="post">
+                    <input type="hidden" name="wall_id" value="${cur.getId()}">
+                    <button type="submit">Like</button>
+                </form>
+            </c:if>
+            <c:if test="${cur.hasLiked(username)}">
+                <form action="/unlike" method="post">
+                    <input type="hidden" name="wall_id" value="${cur.getId()}">
+                    <button type="submit">Unlike</button>
+                </form>
+            </c:if>
+
             Liked by:
             <ul>
                 <c:forEach items="${cur.getLikes()}" var="curLike">

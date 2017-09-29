@@ -70,5 +70,15 @@ public class WallPost {
     public String getImage() {
         return image;
     }
+
+    public boolean hasLiked(String username) {
+        for (Like cur: this.getLikes()) {
+            if (cur.getUsername().equals(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
 
