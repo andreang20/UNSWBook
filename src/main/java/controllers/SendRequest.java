@@ -20,7 +20,7 @@ public class SendRequest extends HttpServlet{
 
         try {
             RequestDao requestDao = new RequestDao(new DbManager());
-            requestDao.addRequest(new Request(Request.INVALID, sender, receiver, false));
+            requestDao.addRequest(new Request(sender, receiver, false));
 
             // need to send email.
 
