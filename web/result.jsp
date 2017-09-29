@@ -33,7 +33,11 @@
                             <c:out value="${cur.getName()}"/>
                         </a>
                         <c:if test="${cur.getFriend() == false}">
-                            <button type = "submit" class="btn-btn-default pull-right" id="right-panel-link" href="#right-panel">+ Add Friend</button>
+                            <!--<button type = "submit" class="btn-btn-default pull-right" id="right-panel-link" href="#right-panel">+ Add Friend</button>-->
+                            <form action="/send_request" method="post">
+                                <input type="hidden" name="receiver" value="${cur.getUsername()}">
+                                <button type = "submit" class="btn-btn-default pull-right" id="right-panel-link">+ Add Friend</button>
+                            </form>
                         </c:if>
                     </h4>
                 </div>
