@@ -10,7 +10,7 @@ public class Request {
         this.receiver = receiver;
         this.accepted = accepted;
     }
-    
+
     public String getSender() {
         return sender;
     }
