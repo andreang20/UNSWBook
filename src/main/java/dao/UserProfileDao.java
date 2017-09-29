@@ -385,5 +385,35 @@ public class UserProfileDao {
         }
     }
 
+    public ArrayList<UserProfile> searchUsers(String full_name, String gender, String dob, String currentUser) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ArrayList<UserProfile> res = null;
+
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("" +
+                    "select lower(concat(first_name,' ',last_name)) as name, username, password, first_name, last_name, email, gender, date_of_birth, session_id, is_banned " +
+                    "from user_profile " +
+                    "where (? is null or lower(concat(first_name,' ',last_name)) like '%%' || lower(?) || '%%') and " +
+                    "(? is null or gender like ?) and " +
+                    "(? is null or date_of_birth = ?::date) and username != ?;");
+            stmt.setString(1, full_name);
+            stmt.setString(2, full_name);
+            stmt.setString(3, gender);
+            stmt.setString(4, gender);
+            stmt.setString(5, dob);
+            stmt.setString(6, dob);
+            stmt.setString(7, currentUser);
+
+            ResultSet rs = stmt.executeQuery();
+            res = convertRsToArrayList(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
 }
 
