@@ -32,6 +32,5 @@ public class UserAllNotifications extends HttpServlet {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
         }
-
     }
 }

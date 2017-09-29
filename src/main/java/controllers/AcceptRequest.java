@@ -18,17 +18,17 @@ import java.io.IOException;
 public class AcceptRequest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // need to check that we are authenticated
-        if ((String) req.getSession().getAttribute("username") == null) {
-            resp.sendRedirect("/index.html");
-            return;
-        }
-
-        String sender = req.getParameter("sender");
-        String receiver = req.getParameter("receiver");
-
-        // remove it from requests, add as friend
         try {
+            String sender = req.getParameter("sender");
+            String receiver = req.getParameter("receiver");
+            // need to check that we are authenticated
+            if (!((String) req.getSession().getAttribute("username")).equals(receiver)) {
+                resp.sendRedirect("/index.html");
+                return;
+            }
+
+
+            // remove it from requests, add as friend
             // need to check that the request exists.
             RequestDao requestDao = new RequestDao(new DbManager());
             if(!requestDao.requestExists(sender, receiver)) {
@@ -50,11 +50,13 @@ public class AcceptRequest extends HttpServlet {
             utils.logActionNow(receiver, "Has accepted "+sender+"'s friend request and now are friends.");
             utils.logActionNow(sender, "Is now friends with "+receiver+".");
 
+            req.setAttribute("sender", sender);
+            req.setAttribute("receiver", receiver);
+            req.getRequestDispatcher("/accepted_friend_req.jsp").forward(req,resp);
+
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
         }
-
-
     }
 }

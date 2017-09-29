@@ -95,7 +95,7 @@ public class WallPostDao {
             stmt = conn.prepareStatement("SELECT *\n" +
                     "FROM wall_post\n" +
                     "WHERE wall_post.username = ? OR wall_post.username in\n" +
-                    "\t(select username\n" +
+                    "\t(select username_secondary\n" +
                     "\t FROM friend_list\n" +
                     "\t WHERE friend_list.username_primary = ? \n" +
                     "\t)\n" +
