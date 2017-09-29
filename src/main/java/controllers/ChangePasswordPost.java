@@ -17,6 +17,11 @@ import java.sql.SQLException;
 public class ChangePasswordPost extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if ((String) req.getSession().getAttribute("username") == null) {
+            resp.sendRedirect("/index.html");
+            return;
+        }
+
         String new_password = req.getParameter("change_password");
         String username = (String) req.getSession().getAttribute("username");
         if (new_password == null || new_password.length() < 1) {

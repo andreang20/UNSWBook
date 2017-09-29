@@ -1,33 +1,27 @@
 package controllers;
+import dao.SearchDAO;
 import db.DbManager;
 import dao.Search;
 import dao.UserProfile;
-import dao.SearchDAO;
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Date;
 import java.util.ArrayList;
 
 @WebServlet("/result")
 public class SearchServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        doGet(req, resp);
-
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if ((String) req.getSession().getAttribute("username") == null) {
+            resp.sendRedirect("/index.html");
+            return;
+        }
+
         //System.out.println("Search servlet start");
         String name = req.getParameter("keyname");
         String gender = req.getParameter("keygender");

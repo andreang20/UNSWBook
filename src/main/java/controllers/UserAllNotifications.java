@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class UserAllNotifications extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //System.out.println((String) req.getSession().getAttribute("username"));
         if ((String) req.getSession().getAttribute("username") == null) {
             resp.sendRedirect("/index.html");
             return;
@@ -31,6 +32,5 @@ public class UserAllNotifications extends HttpServlet {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
         }
-
     }
 }
