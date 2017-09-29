@@ -20,6 +20,11 @@ import java.util.Date;
 public class ChangeUserDetailsPost extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if ((String) req.getSession().getAttribute("username") == null) {
+            resp.sendRedirect("/index.html");
+            return;
+        }
+
         String username = (String) req.getSession().getAttribute("username");
         String newFirstName = req.getParameter("change_first_name");
         String newLastName = req.getParameter("change_last_name");

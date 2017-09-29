@@ -16,6 +16,11 @@ import java.io.IOException;
 public class UnlikeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if ((String) req.getSession().getAttribute("username") == null) {
+            resp.sendRedirect("/index.html");
+            return;
+        }
+
         String wall_id = req.getParameter("wall_id");
         String username = (String) req.getSession().getAttribute("username");
 

@@ -3,6 +3,7 @@ package controllers;
 import dao.Request;
 import dao.RequestDao;
 import db.DbManager;
+import utils.Utils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +16,11 @@ import java.io.IOException;
 public class SendRequest extends HttpServlet{
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if ((String) req.getSession().getAttribute("username") == null) {
+            resp.sendRedirect("/index.html");
+            return;
+        }
+
         String sender = (String) req.getSession().getAttribute("username");
         String receiver = req.getParameter("receiver");
 
@@ -24,6 +30,9 @@ public class SendRequest extends HttpServlet{
 
             // need to send email.
 
+            // log
+            Utils utils = new Utils(new DbManager());
+            utils.logActionNow(sender, "Has sent a friend request to "+receiver+".");
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");

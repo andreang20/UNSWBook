@@ -19,7 +19,10 @@ public class AcceptRequest extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         // need to check that we are authenticated
-        // TODO
+        if ((String) req.getSession().getAttribute("username") == null) {
+            resp.sendRedirect("/index.html");
+            return;
+        }
 
         String sender = req.getParameter("sender");
         String receiver = req.getParameter("receiver");
@@ -42,7 +45,11 @@ public class AcceptRequest extends HttpServlet {
             // make notification
             Utils utils = new Utils(new DbManager());
             utils.makeNotification(sender, receiver+" has accepted your friend request.");
-            
+
+            // need to log
+            utils.logActionNow(receiver, "Has accepted "+sender+"'s friend request and now are friends.");
+            utils.logActionNow(sender, "Is now friends with "+receiver+".");
+
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
