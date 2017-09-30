@@ -6,6 +6,7 @@ drop table friend_list CASCADE;
 drop table logs CASCADE;
 drop table notification CASCADE;
 drop table request CASCADE;
+drop table verfication CASCADE;
 
 -- user profile related sql --
 create table user_profile (
@@ -89,3 +90,11 @@ create table request(
 	-- accepted false == not yet confirm, true == confirm--
 	-- confirm record it to friend_list and send notification--
 );
+
+create table verification(
+  username varchar(60),
+  is_verified boolean,
+  code varchar(500) UNIQUE ,
+  primary key(username),
+  FOREIGN KEY (username) REFERENCES user_profile(username)
+)
