@@ -40,6 +40,10 @@
 <h1>Welcome <%= username%></h1>
 <hr />
 
+<% if (posts.size() == 0) { %>
+    <h1>There are currently no posts for you.</h1>
+<% } %>
+
 <div class="all_posts container">
     <c:forEach items="${posts}" var="cur">
         <div class="post panel panel-default">

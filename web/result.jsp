@@ -23,6 +23,10 @@
 <%
     ArrayList<Search> result = (ArrayList<Search>) request.getAttribute("result");
 %>
+<% if (result.size() == 0) { %>
+    <h1>No results found.</h1>
+<% } %>
+
 <!--form method="post" action="/add"-->
     <div class="panel-group" id="accordion">
         <c:forEach items="${result}" var="cur">

@@ -38,9 +38,9 @@ public class AcceptRequest extends HttpServlet {
             }
 
             requestDao.removeRequest(new Request(sender, receiver, false));
+            requestDao.removeRequest(new Request(receiver, sender, false));
             FriendDao friendDao = new FriendDao(new DbManager());
             friendDao.addFriend(new Friend(sender, receiver));
-            friendDao.addFriend(new Friend(receiver, sender));
 
             // make notification
             Utils utils = new Utils(new DbManager());
