@@ -33,7 +33,7 @@ public class AddFriend extends HttpServlet{
         try {
             DbManager dbm = new DbManager();
             SendMail fm = new SendMail(dbm);
-            send = fm.sendFriendMail(sender, receiver);
+            send = fm.sendFriendMail(sender, receiver, req);
         } catch (Exception e) {
             // error
             e.printStackTrace();
