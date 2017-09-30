@@ -46,7 +46,7 @@ public class SendMail {
         session.setDebug(true);
     }
 
-    public boolean sendFriendMail(String sender, String receiver) throws SQLException {
+    public boolean sendFriendMail(String sender, String receiver, HttpServletRequest req) throws SQLException {
         Connection conn = null;
         PreparedStatement stmt = null;
         String e_receiver ="";
@@ -92,8 +92,11 @@ public class SendMail {
 
         try {
             // Create a default MimeMessage object.
-            String url ="localhost:8080/accept_request/sender="+sender+"&&receiver="+receiver;
+            //String url ="localhost:8080/accept_request/sender="+sender+"&&receiver="+receiver;
             Message message = new MimeMessage(session);
+            String url = req.getRequestURL().toString();
+            url = url.replace("/add", "/accept_request");
+            url +="/sender="+sender+"&&receiver="+receiver;
 
             // Set From: header field of the header.
             message.setFrom(new InternetAddress(this.username));
@@ -106,13 +109,13 @@ public class SendMail {
             message.setSubject("Friend Request");
 
             // set the actual message
-            String link = "<a href = '${url}'>"+url+"</a>";
-            String msg = sender +" send invitation request to you " +
-                    "To accept it please click on the link bellow\n" +
-                    link +
-                    "\n\n Thank You\n\n\n" +
+            //String link = "<a href = "http:l>Add Friend</a>";
+            String msg = sender +" send invitation request to you\n" +
+                    "To accept it please visit on the link bellow\n" +
+                    url +
+                    "\n\nThank You\n\n\n" +
                     "Admin";
-            message.setContent(msg,"text/html; charset=UTF-8");
+            message.setText(msg);
 
 
             ;
