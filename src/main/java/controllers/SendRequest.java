@@ -28,8 +28,6 @@ public class SendRequest extends HttpServlet{
             RequestDao requestDao = new RequestDao(new DbManager());
             requestDao.addRequest(new Request(sender, receiver, false));
 
-            // need to send email.
-
             // log
             Utils utils = new Utils(new DbManager());
             utils.logActionNow(sender, "Has sent a friend request to "+receiver+".");

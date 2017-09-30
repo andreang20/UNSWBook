@@ -2,7 +2,10 @@ package controllers;
 
 import dao.UserProfile;
 import dao.UserProfileDao;
+import dao.Verification;
+import dao.VerificationDao;
 import db.DbManager;
+import org.apache.commons.lang.RandomStringUtils;
 import utils.Utils;
 
 import javax.servlet.ServletException;
@@ -51,6 +54,7 @@ public class RegistrationServlet extends HttpServlet {
             UserProfileDao userProfileDao = new UserProfileDao(new DbManager());
             userProfileDao.addUserProfile(newProfile);
 
+
             // success
             Utils utils = new Utils(new DbManager());
             utils.logActionNow(userName, "User has registered.");
@@ -62,7 +66,10 @@ public class RegistrationServlet extends HttpServlet {
             resp.sendRedirect("/GenericError.jsp");
             return;
         }
+    }
 
+    private void tryAddVerification(VerificationDao dao, String username) {
 
     }
+
 }

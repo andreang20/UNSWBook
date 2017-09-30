@@ -94,7 +94,7 @@ create table request(
 create table verification(
   username varchar(60),
   is_verified boolean,
-  code varchar(500) UNIQUE ,
+  code varchar(500),
   primary key(username),
   FOREIGN KEY (username) REFERENCES user_profile(username)
 )

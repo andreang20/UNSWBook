@@ -2,6 +2,8 @@ package dao;
 
 import db.DbManager;
 import db.IDbManager;
+import email.MyEmail;
+import org.apache.commons.lang.RandomStringUtils;
 import utils.Utils;
 
 import java.sql.*;
@@ -19,8 +21,10 @@ public class UserProfileDao {
     public void addUserProfile(UserProfile userProfile) {
         Connection conn = null;
         PreparedStatement stmt = null;
+        PreparedStatement stmt1 = null;
         try {
             conn = dbm.establishConnection();
+            conn.setAutoCommit(false);
             stmt = conn.prepareStatement("INSERT INTO user_profile (username, password, first_name, last_name, email, gender, date_of_birth, session_id, is_banned) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);");
 
@@ -36,8 +40,23 @@ public class UserProfileDao {
 
             stmt.executeUpdate();
 
+            // need to add to verification
+            String code = RandomStringUtils.randomAlphanumeric(500);
+            stmt1 = conn.prepareStatement("" +
+                    "insert into verification(username, is_verified, code) VALUES (?,?,?);");
+            stmt1.setString(1, userProfile.getUsername());
+            stmt1.setBoolean(2, false);
+            stmt1.setString(3, code);
+            stmt1.executeUpdate();
 
-        } catch (SQLException e) {
+            MyEmail myEmail = new MyEmail();
+            String url = "http://localhost:8080/confirm_verification?username="+userProfile.getUsername()+"&code="+code;
+            String content = "Hello "+userProfile.getUsername()+", confirm your email here!";
+            myEmail.send("UNSWbook: Email verification", content, url, userProfile.getEmail());
+
+
+            conn.commit();
+        } catch (Exception e) {
             e.printStackTrace();
             try {
                 conn.rollback();

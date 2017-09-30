@@ -4,6 +4,7 @@ import db.IDbManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class VerificationDao {
@@ -66,5 +67,46 @@ public class VerificationDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isExists(String username, String code) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        Boolean res = false;
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("" +
+                    "select * " +
+                    "from verification " +
+                    "where username = ? and code = ?;");
+            stmt.setString(1, username);
+            stmt.setString(2, code);
+
+            ResultSet rs = stmt.executeQuery();
+
+            if(rs.next()) {
+                res = true;
+            } else {
+                res = false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return res;
     }
 }

@@ -1,6 +1,7 @@
 package dao;
 
 import db.IDbManager;
+import email.MyEmail;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,6 +21,7 @@ public class RequestDao {
 
         try {
             conn = dbm.establishConnection();
+            conn.setAutoCommit(false);
             stmt = conn.prepareStatement("" +
                     "insert into request(sender, receiver, accepted) VALUES (?,?,?);");
             stmt.setString(1, request.getSender());
@@ -28,8 +30,25 @@ public class RequestDao {
 
             stmt.executeUpdate();
 
-        } catch (SQLException e) {
+            // need to get receiver's email
+            UserProfileDao userProfileDao = new UserProfileDao(dbm);
+            UserProfile receiverProfile = userProfileDao.getUserProfile(request.getReceiver());
+
+
+            // send email
+            MyEmail myEmail = new MyEmail();
+            String url = "http://localhost:8080/accept_request?sender="+request.getSender()+"&receiver="+request.getReceiver();
+            String content = "You have received a friend request from "+request.getSender()+".";
+            myEmail.send("UNSWbook: Friend request", content, url, receiverProfile.getEmail());
+
+            conn.commit();
+        } catch (Exception e) {
             e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             throw new RuntimeException("Unable to add request.");
         } finally {
             if (conn != null) {
