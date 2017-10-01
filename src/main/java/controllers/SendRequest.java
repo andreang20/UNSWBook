@@ -33,7 +33,7 @@ public class SendRequest extends HttpServlet{
             utils.logActionNow(sender, "Has sent a friend request to "+receiver+".");
         } catch (Exception e) {
             e.printStackTrace();
-            resp.sendRedirect("/GenericError.jsp");
+            resp.sendRedirect("/already_sent_request.jsp");
             return;
         }
         resp.sendRedirect("/home");

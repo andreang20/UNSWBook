@@ -38,6 +38,13 @@ public class RegistrationServlet extends HttpServlet {
         String userName = req.getParameter("username");
         String password = req.getParameter("password");
         try {
+            UserProfileDao userProfileDao = new UserProfileDao(new DbManager());
+            // check if username exists already
+            if (userProfileDao.getUserProfile(userName) != null) {
+                resp.sendRedirect("/username_already_exists.jsp");
+                return;
+            }
+
             Date date = null;
             try {
                 date = new SimpleDateFormat("dd/MM/yyyy").parse(dob);
@@ -51,7 +58,6 @@ public class RegistrationServlet extends HttpServlet {
             int session_id = 0;
             UserProfile newProfile = new UserProfile(userName, password, firstName, lastName, email, gender, d, session_id, false);
 
-            UserProfileDao userProfileDao = new UserProfileDao(new DbManager());
             userProfileDao.addUserProfile(newProfile);
 
 

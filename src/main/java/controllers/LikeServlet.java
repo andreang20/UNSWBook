@@ -35,7 +35,7 @@ public class LikeServlet extends HttpServlet {
             WallPostDao wallPostDao = new WallPostDao(new DbManager());
             WallPost post = wallPostDao.getPostsById(Integer.parseInt(wall_id));
 
-            utils.makeNotification(username, username+" has liked your post of content '"+post.getContent()+"' at time '"+post.getPostDate()+"'.");
+            utils.makeNotification(post.getUsername(), username+" has liked your post of content '"+post.getContent()+"' of time '"+post.getPostDate()+"'.");
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendRedirect("/GenericError.jsp");
