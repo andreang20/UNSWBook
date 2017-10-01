@@ -38,7 +38,7 @@ public class RequestDao {
             // send email
             MyEmail myEmail = new MyEmail();
             String url = "http://localhost:8080/accept_request?sender="+request.getSender()+"&receiver="+request.getReceiver();
-            String content = "You have received a friend request from "+request.getSender()+".";
+            String content = "Hello "+request.getReceiver()+", you have received a friend request from "+request.getSender()+".";
             myEmail.send("UNSWbook: Friend request", content, url, receiverProfile.getEmail());
 
             conn.commit();
