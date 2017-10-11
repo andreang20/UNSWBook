@@ -59,13 +59,28 @@ public class LikeDao {
         PreparedStatement stmt = null;
         try {
             conn = dbm.establishConnection();
+            conn.setAutoCommit(false);
             stmt = conn.prepareStatement("" +
                     "insert into user_like(username, wall_id) values (?, ?);");
             stmt.setString(1, like.getUsername());
             stmt.setInt(2, like.getWall_id());
             stmt.executeUpdate();
+
+            GraphEntityDao graphEntityDao = new GraphEntityDao(dbm);
+            int wall_post_id = graphEntityDao.getUniqueId(new GraphEntity("wall_post",  Integer.toString(like.getWall_id()))).getEntityId();
+            int person_id = graphEntityDao.getUniqueId(new GraphEntity("user_profile", like.getUsername())).getEntityId();
+
+            GraphEdgeDao graphEdgeDao = new GraphEdgeDao(dbm);
+            graphEdgeDao.insert_edge(conn, new GraphEdge(person_id, wall_post_id, "like"));
+            conn.commit();
+
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
         } finally {
             if (conn != null) {
                 try {
@@ -90,14 +105,31 @@ public class LikeDao {
 
         try {
             conn = dbm.establishConnection();
+            conn.setAutoCommit(false);
             stmt = conn.prepareStatement("" +
                     "delete from user_like " +
                     "where username = ? and wall_id = ?;");
             stmt.setString(1, like.getUsername());
             stmt.setInt(2, like.getWall_id());
+
             stmt.executeUpdate();
+
+            // remove like from graph
+            GraphEntityDao graphEntityDao = new GraphEntityDao(dbm);
+            int wall_post_id = graphEntityDao.getUniqueId(new GraphEntity("wall_post",  Integer.toString(like.getWall_id()))).getEntityId();
+            int person_id = graphEntityDao.getUniqueId(new GraphEntity("user_profile", like.getUsername())).getEntityId();
+
+            GraphEdgeDao graphEdgeDao = new GraphEdgeDao(dbm);
+            graphEdgeDao.remove_edge(conn, new GraphEdge(person_id, wall_post_id, "like"));
+
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
             throw new RuntimeException("Unable to remove like.");
         } finally {
             if (conn != null) {
