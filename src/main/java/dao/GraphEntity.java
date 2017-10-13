@@ -6,10 +6,13 @@ public class GraphEntity {
     private String attribute;
     private String value;
 
+    private boolean isSelected;
+
     public GraphEntity(int entityId, String attribute, String value) {
         this.entityId = entityId;
         this.attribute = attribute;
         this.value = value;
+        isSelected = false;
     }
 
     public GraphEntity(String attribute, String value) {
@@ -44,5 +47,13 @@ public class GraphEntity {
         }
 
         return false;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

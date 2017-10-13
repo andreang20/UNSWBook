@@ -37,7 +37,7 @@
         // create an array with nodes
         var nodes = new vis.DataSet([
             <% for (GraphEntity cur: graphEntities) { %>
-            {id: <%=cur.getEntityId()%>, label: '<%=cur.getAttribute()%> id: <%=cur.getValue()%>'},
+            {id: <%=cur.getEntityId()%>, label: '<%=cur.getAttribute()%> id: <%=cur.getValue()%>'  <%if (cur.isSelected()) {%>, color: 'red' <%}%>},
             <% } %>
         ]);
 
@@ -54,7 +54,23 @@
             nodes: nodes,
             edges: edges
         };
-        var options = {};
+        var options = {
+            edges: {
+                length: 180
+            },
+            physics: {
+                forceAtlas2Based: {
+                    gravitationalConstant: -26,
+                    centralGravity: 0.005,
+                    springLength: 230,
+                    springConstant: 0.18
+                },
+                maxVelocity: 146,
+                solver: 'forceAtlas2Based',
+                timestep: 0.35,
+                stabilization: {iterations: 150}
+            }
+        };
         var network = new vis.Network(container, data, options);
     </script>
 

@@ -11,6 +11,8 @@
     <title>Graph form</title>
 </head>
 <body>
+    <h1>Display all:</h1>
+    <a href="/graph/display_all"> Display all</a>
     <h1>Graph search</h1>
     <form action="/graph/search">
         <input type="text" name="parameter"/>

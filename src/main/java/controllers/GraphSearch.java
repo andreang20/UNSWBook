@@ -32,6 +32,7 @@ public class GraphSearch extends HttpServlet {
                 for (UserProfile cur: res) {
                     GraphEntity toAdd = graphEntityDao.getUniqueId(new GraphEntity("user_profile", cur.getUsername()));
                     if (toAdd != null) {
+                        toAdd.setSelected(true);
                         entities.add(toAdd);
                     }
                 }
@@ -80,6 +81,7 @@ public class GraphSearch extends HttpServlet {
                 for (WallPost cur: posts) {
                     GraphEntity toAdd = graphEntityDao.getUniqueId(new GraphEntity("wall_post", Integer.toString(cur.getId())));
                     if (toAdd != null) {
+                        toAdd.setSelected(true);
                         entities.add(toAdd);
                     }
                 }
@@ -140,12 +142,13 @@ public class GraphSearch extends HttpServlet {
                             }
                         }
                     }
-                    System.out.println("Friend size "+friends.size());
-                    System.out.println("friend of friend size:"+friendsOfFriends.size());
+                    //System.out.println("Friend size "+friends.size());
+                    //System.out.println("friend of friend size:"+friendsOfFriends.size());
                     // get the corresponding entities
                     for (String cur: friendsOfFriends) {
                         GraphEntity toAdd = graphEntityDao.getUniqueId(new GraphEntity("user_profile", cur));
                         if (toAdd != null) {
+                            toAdd.setSelected(true);
                             entities.add(toAdd);
                         }
                     }

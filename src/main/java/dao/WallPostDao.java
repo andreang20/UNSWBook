@@ -45,6 +45,10 @@ public class WallPostDao {
             GraphEntityDao graphEntityDao = new GraphEntityDao(dbm);
             int post_id = graphEntityDao.insert_entity(conn, new GraphEntity("wall_post", String.valueOf(id)));
 
+            int user_entity_id = graphEntityDao.getUniqueId(new GraphEntity("user_profile", wallPost.getUsername())).getEntityId();
+            // need to create edge of who created it
+            GraphEdgeDao graphEdgeDao = new GraphEdgeDao(dbm);
+            graphEdgeDao.insert_edge(conn, new GraphEdge(user_entity_id, post_id, "created"));
 
             conn.commit();
         } catch (SQLException e) {
