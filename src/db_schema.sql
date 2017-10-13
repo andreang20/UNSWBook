@@ -7,6 +7,8 @@ drop table logs CASCADE;
 drop table notification CASCADE;
 drop table request CASCADE;
 drop table verfication CASCADE;
+drop table graph_edge CASCADE ;
+drop table graph_entity CASCADE ;
 
 -- user profile related sql --
 create table user_profile (
@@ -67,7 +69,6 @@ create table log(
 	FOREIGN KEY (username) REFERENCES  user_profile(username)
 );
 
-
 create table notification (
 	notification_id serial,
 	username varchar(60) not null,
@@ -77,7 +78,6 @@ create table notification (
 	PRIMARY KEY (notification_id),
 	FOREIGN KEY (username) REFERENCES  user_profile(username)
 );
-
 
 -- friend request email --
 create table request(
@@ -97,4 +97,23 @@ create table verification(
   code varchar(500),
   primary key(username),
   FOREIGN KEY (username) REFERENCES user_profile(username)
-)
+);
+
+create table graph_entity(
+  entity_id serial,
+  attribute VARCHAR(20),
+  value text,
+  PRIMARY KEY (entity_id),
+  UNIQUE (attribute, value)
+);
+
+create table graph_edge(
+  edge_id serial,
+  from_entity int,
+  to_entity int,
+  relationship VARCHAR(50),
+  PRIMARY KEY (edge_id),
+  FOREIGN KEY (from_entity) REFERENCES graph_entity(entity_id),
+  FOREIGN KEY (to_entity) REFERENCES graph_entity(entity_id),
+  UNIQUE (from_entity, to_entity, relationship)
+);

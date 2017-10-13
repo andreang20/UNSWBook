@@ -21,17 +21,36 @@ public class WallPostDao {
     public void addWallPost(WallPost wallPost) {
         Connection conn = null;
         PreparedStatement stmt = null;
+        String generatedCol[] = {"id"};
         try {
             conn = dbm.establishConnection();
+            conn.setAutoCommit(false);
             stmt = conn.prepareStatement("INSERT INTO wall_post (username, content, post_date, img)" +
-                    " VALUES (?,?,?,?);");
+                    " VALUES (?,?,?,?);", generatedCol);
             stmt.setString(1, wallPost.getUsername());
             stmt.setString(2, wallPost.getContent());
             stmt.setTimestamp(3, wallPost.getPostDate());
             stmt.setString(4, wallPost.getImage());
-            stmt.executeUpdate();
 
-            //conn.commit();
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Unable to insert");
+            }
+
+            // get the generated id
+            ResultSet keyset = stmt.getGeneratedKeys();
+            keyset.next();
+            int id = keyset.getInt(1);
+            GraphEntityDao graphEntityDao = new GraphEntityDao(dbm);
+            int post_id = graphEntityDao.insert_entity(conn, new GraphEntity("wall_post", String.valueOf(id)));
+
+            int user_entity_id = graphEntityDao.getUniqueId(new GraphEntity("user_profile", wallPost.getUsername())).getEntityId();
+            // need to create edge of who created it
+            GraphEdgeDao graphEdgeDao = new GraphEdgeDao(dbm);
+            graphEdgeDao.insert_edge(conn, new GraphEdge(user_entity_id, post_id, "created"));
+
+            conn.commit();
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException("Unable to add wall post.");
@@ -160,6 +179,37 @@ public class WallPostDao {
             }
         }
         return res;
+    }
+
+    public ArrayList<WallPost> searchPosts(String content) throws SQLException {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ArrayList<WallPost> res = new ArrayList<>();
+        try {
+            conn = dbm.establishConnection();
+            stmt = conn.prepareStatement("" +
+                    "SELECT * " +
+                    "FROM wall_post " +
+                    "WHERE lower(content) like '%%' || lower(?) || '%%';");
+            stmt.setString(1, content);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while(rs.next()) {
+                res.add(new WallPost(rs.getString("username"), rs.getInt("id"),
+                        rs.getString("content"), rs.getTimestamp("post_date")));
+            }
+
+            return res;
+
+        } finally {
+            if (conn != null) {
+                conn.close();
+            }
+            if (stmt != null) {
+                stmt.close();
+            }
+        }
     }
 
 

@@ -22,6 +22,7 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">search</button>
     </form>
 
-
+    <h1>Graph stuff</h1>
+<a href="/graph_form.jsp"> Search or view all graph </a>
 </body>
 </html>

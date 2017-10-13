@@ -49,6 +49,10 @@ public class UserProfileDao {
             stmt1.setString(3, code);
             stmt1.executeUpdate();
 
+            GraphEntityDao graphEntityDao = new GraphEntityDao(dbm);
+            graphEntityDao.insert_entity(conn, new GraphEntity("user_profile", userProfile.getUsername()));
+
+
             MyEmail myEmail = new MyEmail();
             String url = "http://localhost:8080/confirm_verification?username="+userProfile.getUsername()+"&code="+code;
             String content = "Hello "+userProfile.getUsername()+", confirm your email here!";
@@ -404,7 +408,7 @@ public class UserProfileDao {
         }
     }
 
-    public ArrayList<UserProfile> searchUsers(String full_name, String gender, String dob, String currentUser) {
+    public ArrayList<UserProfile> searchUsers(String full_name, String gender, String dob) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ArrayList<UserProfile> res = null;
@@ -416,14 +420,13 @@ public class UserProfileDao {
                     "from user_profile " +
                     "where (? is null or lower(concat(first_name,' ',last_name)) like '%%' || lower(?) || '%%') and " +
                     "(? is null or gender like ?) and " +
-                    "(? is null or date_of_birth = ?::date) and username != ?;");
+                    "(? is null or date_of_birth = ?::date);");
             stmt.setString(1, full_name);
             stmt.setString(2, full_name);
             stmt.setString(3, gender);
             stmt.setString(4, gender);
             stmt.setString(5, dob);
             stmt.setString(6, dob);
-            stmt.setString(7, currentUser);
 
             ResultSet rs = stmt.executeQuery();
             res = convertRsToArrayList(rs);
