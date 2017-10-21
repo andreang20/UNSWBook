@@ -19,6 +19,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.sun.activation.registries.LogSupport.log;
+
 
 @WebServlet("/register")
 public class RegistrationServlet extends HttpServlet {
@@ -44,7 +46,7 @@ public class RegistrationServlet extends HttpServlet {
                 resp.sendRedirect("/username_already_exists.jsp");
                 return;
             }
-
+            System.out.println(dob);
             Date date = null;
             try {
                 date = new SimpleDateFormat("dd/MM/yyyy").parse(dob);
@@ -69,6 +71,7 @@ public class RegistrationServlet extends HttpServlet {
             return;
         } catch (Exception e) {
             e.printStackTrace();
+
             resp.sendRedirect("/GenericError.jsp");
             return;
         }

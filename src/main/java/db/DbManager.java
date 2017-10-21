@@ -19,8 +19,8 @@ public class DbManager implements IDbManager {
     }
 
     public Connection establishConnection() throws SQLException {
-        connection = DriverManager.getConnection(DB_URL);
-        // connection = DriverManager.getConnection(DB_URL, "postgres", "Mhn@3115");
+//        connection = DriverManager.getConnection(DB_URL);
+        connection = DriverManager.getConnection(DB_URL, "postgres", "Mhn@3115");
 
         return connection;
     }

@@ -1,12 +1,14 @@
 package controllers;
 
+import Rest.RestPost;
 import dao.UserProfile;
 import dao.WallPost;
 import dao.WallPostDao;
 import db.DbManager;
+import email.MyEmail;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.mail.EmailException;
 import utils.Utils;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -19,6 +21,7 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Base64;
+import java.util.List;
 
 
 @WebServlet(urlPatterns = "/create_post")
@@ -60,6 +63,27 @@ public class SubmitPostServlet extends HttpServlet {
         Timestamp ts = new Timestamp(System.currentTimeMillis());
 
         System.out.println(content);
+
+        // extract key words
+        RestPost rp = new RestPost();
+        List<String> postBullyWords = rp.ExtractFeaturesRest(content);
+
+        System.out.println("bully words in post: " + postBullyWords.toString());
+
+
+        // Send email to admin if there is bully words in post
+        // send email
+        try {
+            MyEmail myEmail = new MyEmail();
+            String url = "http://localhost:8080/admin";
+            String string = username + " sent a post with the following bullying words: " + postBullyWords.toString();
+            String admin_email = "unswbookjusticeleague@gmail.com";
+            myEmail.send("UNSWbook: Bullying Post", string, url, admin_email);
+
+        } catch (EmailException e) {
+            e.printStackTrace();
+        }
+
         // Do a write
         WallPost newPost = new WallPost(username, SubmitPostServlet.UNINIT_ID, content, ts);
         newPost.setImage(base64img);
@@ -77,8 +101,15 @@ public class SubmitPostServlet extends HttpServlet {
 
         // log
         try {
-            Utils utils = new Utils(new DbManager());
-            utils.logActionNow(username, "User has posted '"+content+"' on wall.");
+            if (postBullyWords.isEmpty()) {
+                Utils utils = new Utils(new DbManager());
+                utils.logActionNow(username, "User has posted '" + content + "' on wall.");
+            }
+            else {
+                Utils utils = new Utils(new DbManager());
+                utils.logActionNow(username, "User has posted '" + content + "' on wall." +
+                 "!!!!!!!!! This post contains these bullying words: " + postBullyWords.toString());
+            }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {
